@@ -4,6 +4,9 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to right, #7bc3fefb, #e0f3ff); 
 }
 .main-container {
   padding-top: 50px;
@@ -20,7 +23,16 @@
 }
 
 .grid-column-heading {
-  background-color: rgb(120, 169, 206);
+  background-color: rgb(169, 176, 255);
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+}
+
+.grid-column-normal {
+  background-color: rgb(223, 226, 255);
   height: 50px;
   display: flex;
   justify-content: center;
@@ -29,7 +41,14 @@
 }
 
 .grid-column-heading-text {
-  font-weight: 650;
+  font-weight: 500;
+  font-size: 25px;
+  color: rgb(0, 0, 0)
+}
+
+.grid-column-normal-text {
+  font-weight: 500;
+  font-size: 20px;
   color: rgb(0, 0, 0)
 }
 
@@ -38,3 +57,11 @@
   height: 30px;
   line-height: 20px;
 }
+
+@media screen and (max-width: 800px) {
+  .grid-column-heading-text {
+    font-size: 15px;
+  }
+  .grid-column-normal-text {
+    font-size: 13px;
+  }
