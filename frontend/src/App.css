@@ -58,6 +58,15 @@
   line-height: 20px;
 }
 
+.signout {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 800px) {
   .grid-column-heading-text {
     font-size: 15px;
@@ -65,3 +74,4 @@
   .grid-column-normal-text {
     font-size: 13px;
   }
+}
