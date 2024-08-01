@@ -67,6 +67,19 @@
   cursor: pointer;
 }
 
+.google-signin-button {
+  width: 300px;
+  cursor: pointer;
+}
+
+.google-signin-button-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media screen and (max-width: 800px) {
   .grid-column-heading-text {
     font-size: 15px;
