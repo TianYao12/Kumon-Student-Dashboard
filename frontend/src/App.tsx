@@ -11,7 +11,6 @@ const App = () => {
         auth.onAuthStateChanged((user) => {
             return setUser(user);
         })
-        console.log(user, "broski")
     })
     return (
         <BrowserRouter>
