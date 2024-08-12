@@ -32,17 +32,26 @@ function StudentDashboard() {
   };
 
 
-  const handleScan = (data: string) => {
+  const handleScan = async(data: string) => {
     if (data) {
-      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const newStudent = {
-        duration: 30,
+        name: "PEPSI",
         kumon_id: data,
-        name: "Name",
-        time_entered: currentTime,  
+        duration: 30,
+        time_entered: new Date().toISOString(),  
       };
-      setStudentData((prevStudentData) => [...prevStudentData, newStudent]);
-      setScannedData(data);
+      try {
+        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADDSTUDENT_ENDPOINT_URL, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(newStudent)
+      });
+      if (!response.ok) throw new Error(JSON.stringify(response));
+      const data = await response.json();
+      setStudentData([...studentData, data.data]);
+      } catch(error) {
+        console.error(error);
+      }
     }
   };
   
@@ -77,6 +86,7 @@ function StudentDashboard() {
       <div className='main-container'> 
         <div className="signout" onClick={handleSignOut}>Sign Out</div>
         <h1>Student Dashboard</h1>
+        <p>we needa change this to autofocus on teh input always and probably make the input not visible? (scanner just takes text like keyboard input)</p>
         <input
           type="text"
           onChange={handleInputChange}
