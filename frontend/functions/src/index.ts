@@ -107,3 +107,32 @@ export const addStudentData = functions.https.onRequest(async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+export const deleteStudentData = functions.https.onRequest(async (req, res) => {
+  try {
+    const { kumon_id } = req.body;
+
+    if (typeof kumon_id !== "string") {
+      res.status(400).send("Invalid kumon_id.");
+      return;
+    }
+
+    const studentQuerySnapshot = await db.collection("student_data").where("kumon_id", "==", kumon_id).get();
+
+    if (studentQuerySnapshot.empty) {
+      res.status(404).json({ message: "Document not found" });
+      return;
+    }
+
+    const batch = db.batch();
+    studentQuerySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+
+    res.status(200).json({ message: "Document(s) deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting student data: ", error);
+    res.status(500).send("Internal Server Error");
+  }
+});

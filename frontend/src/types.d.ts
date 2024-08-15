@@ -11,3 +11,9 @@ interface AddStudentProps {
   studentData: StudentData[];
   setStudentData: React.Dispatch<React.SetStateAction<StudentData[]>>;
 }
+
+interface DeleteModalProps {
+  student: StudentData | null;
+  onDelete: () => void;
+  onClose: () => void;
+}
