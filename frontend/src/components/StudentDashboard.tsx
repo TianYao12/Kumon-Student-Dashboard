@@ -151,7 +151,12 @@ function StudentDashboard() {
             </div>
         )})}
         <div className="add-student-container">
-          <button onClick={() => setAddOpen(true)} className="add-student-button">Add Student</button>
+          <button 
+            onClick={() => setAddOpen((prev) => !prev)} 
+            className="add-student-button"
+          >
+              Add Student
+          </button>
           { addOpen && 
             <AddStudent 
               addOpen={addOpen} 

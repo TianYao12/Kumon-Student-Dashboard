@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #ceccff,  #989dfffb); 
+  background: linear-gradient(to right, #98bafffb, #8795ff); 
 }
 
 body {
@@ -31,7 +31,7 @@ body {
 }
 
 .grid-column-heading {
-  background-color: rgb(195, 176, 255);
+  background-color: #919eff;
   height: 50px;
   display: flex;
   justify-content: center;
@@ -78,7 +78,7 @@ body {
 
 .signout:hover {
   transition: all 300ms ease-in-out;
-  color: rgb(216, 195, 255);
+  color: rgb(228, 222, 241);
 }
 
 .google-signin-button {
@@ -114,7 +114,7 @@ body {
 }
 
 .add-student-container {
-  margin-top: 100px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -157,12 +157,13 @@ body {
 }
 
 .delete-button {
-  background-color: rgb(216, 220, 255);
+  background-color: rgb(144, 154, 255);
   border: 1px solid black;
 }
 
 .delete-button:hover {
-  background-color: rgb(174, 181, 255);
+  background-color: rgb(128, 139, 255);
+  border: 1px solid black;
   transition: all 300ms ease-in-out;
 }
 
@@ -195,6 +196,21 @@ body {
   margin-top: 20px;
 }
 
+
+.delete-modal-delete {
+  background-color: #7568e6;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-modal-delete:hover {
+  background-color: #5d4fd9;
+  transition: all 300ms ease-in-out;
+}
+
 .delete-modal-cancel {
   background-color: #ccc;
   color: #333;
@@ -205,21 +221,9 @@ body {
   cursor: pointer;
 }
 
-.delete-modal-delete {
-  background-color: #d9534f;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 .delete-modal-cancel:hover {
-  background-color: #bbb;
-}
-
-.delete-modal-delete:hover {
-  background-color: #c9302c;
+  background-color: #b6b6b6;
+  transition: all 300ms ease-in-out;
 }
 
 
