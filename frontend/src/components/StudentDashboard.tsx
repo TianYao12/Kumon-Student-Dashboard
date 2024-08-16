@@ -53,7 +53,6 @@ function StudentDashboard() {
       const newStudent = {
         name: "PEPSI",
         kumon_id: data,
-        duration: 30,
         time_entered: new Date().toISOString(),  
       };
       try {
@@ -120,9 +119,6 @@ function StudentDashboard() {
           <div className="grid-column-heading">
             <h2 className="grid-column-heading-text">Time Entered</h2>
           </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Duration</h2>
-          </div>
         </div>
         { studentData.map((student, index) => {
           return (
@@ -135,9 +131,6 @@ function StudentDashboard() {
               </div>
               <div className="grid-column-normal">
                 <h2 className="grid-column-normal-text">{student.time_entered}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.duration}</h2>
               </div>
               <button 
                 onClick={() => {

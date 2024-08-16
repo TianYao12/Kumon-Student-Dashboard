@@ -1,5 +1,4 @@
 interface StudentData {
-  duration: number; 
   kumon_id: string; 
   name: string; 
   time_entered: string; 

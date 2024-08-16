@@ -5,7 +5,6 @@ const AddStudent = (props: AddStudentProps) => {
 
     const [name, setName] = useState<string>("");
     const [kumonId, setKumonId] = useState<string>("");
-    const [duration, setDuration] = useState<number>(0);
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
@@ -14,7 +13,6 @@ const AddStudent = (props: AddStudentProps) => {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                duration: duration, 
                 kumon_id: kumonId,
                 name: name, 
                 time_entered: new Date().toISOString()
@@ -25,7 +23,6 @@ const AddStudent = (props: AddStudentProps) => {
         setStudentData([...studentData, data.data])
         setName("");
         setKumonId("");
-        setDuration(0);
     }
 
     return (
@@ -48,15 +45,6 @@ const AddStudent = (props: AddStudentProps) => {
                         className="new-student-input"
                         value={kumonId}
                         onChange={(e) => setKumonId(e.target.value)} 
-                    />
-                </div>
-                <div className="add-student-text-input-container ">
-                    <p className="add-student-input-heading-text">Duration</p>
-                    <input
-                        type="number"
-                        className="new-student-input"
-                        value={duration}
-                        onChange={(e) => setDuration(parseInt(e.target.value))} 
                     />
                 </div>
                 <button type="submit" className="add-student-submit-button">Submit</button>

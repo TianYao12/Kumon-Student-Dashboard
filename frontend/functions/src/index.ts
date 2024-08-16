@@ -7,7 +7,6 @@ const db = admin.firestore();
 interface StudentData {
   name: string;
   kumon_id: string;
-  duration: number;
   time_entered: {
     _seconds: number;
     _nanoseconds: number;
@@ -17,7 +16,6 @@ interface StudentData {
 interface FormattedStudentData {
   name: string;
   kumon_id: string;
-  duration: number;
   time_entered: string;
 }
 
@@ -44,7 +42,6 @@ export const getAllStudentData = functions.https.onRequest(async (req, res) => {
       studentData.push({ 
         name: data.name, 
         kumon_id: data.kumon_id, 
-        duration: data.duration, 
         time_entered: formattedTimeEntered 
       });
     });
@@ -59,10 +56,9 @@ export const getAllStudentData = functions.https.onRequest(async (req, res) => {
 
 export const addStudentData = functions.https.onRequest(async (req, res) => {
   try {
-    const { duration, kumon_id, name, time_entered } = req.body;
+    const { kumon_id, name, time_entered } = req.body;
 
     if (
-      typeof duration !== "number" ||
       typeof kumon_id !== "string" ||
       typeof name !== "string" ||
       typeof time_entered !== "string"
@@ -71,7 +67,6 @@ export const addStudentData = functions.https.onRequest(async (req, res) => {
       return;
     }
     const newStudentRef = await db.collection("student_data").add({
-      duration,
       kumon_id,
       name,
       time_entered: new Date(time_entered),
@@ -97,7 +92,6 @@ export const addStudentData = functions.https.onRequest(async (req, res) => {
         data: {
           name: data.name,
           kumon_id: data.kumon_id,
-          duration: data.duration,
           time_entered: formattedTimeEntered
         }
       });
