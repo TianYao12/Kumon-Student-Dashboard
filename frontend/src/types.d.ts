@@ -2,6 +2,7 @@ interface StudentData {
   kumon_id: string; 
   name: string; 
   time_entered: string; 
+  subject: string;
 }
 
 interface AddStudentProps {
