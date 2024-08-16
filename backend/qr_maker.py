@@ -27,7 +27,7 @@ for student in students:
     img = qr.make_image(fill_color="black", back_color="white")
     
     # Save the QR code image with the filename as firstNameLastName.png
-    img.save(f"{output_dir}{student['First Name']}{student['Last Name']}.png")
+    img.save(f"{output_dir}{student['First Name']}{student['Last Name']}{student['Subject']}.png")
     
     # Add the qr_id to the student data
     student['qrID'] = qr_id
