@@ -8,8 +8,8 @@ const AddStudent = (props: AddStudentProps) => {
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
-        if (!import.meta.env.VITE_FIRESTORE_ADDSTUDENT_ENDPOINT_URL) throw new Error("No firestore env key!");
-        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADDSTUDENT_ENDPOINT_URL, {
+        if (!import.meta.env.VITE_FIRESTORE_ADD_CURRENT_STUDENT_ENDPOINT_URL) throw new Error("No firestore env key!");
+        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADD_CURRENT_STUDENT_ENDPOINT_URL, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

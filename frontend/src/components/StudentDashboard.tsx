@@ -22,8 +22,8 @@ function StudentDashboard() {
 
   const fetchStudentData = async() => {
     try {
-      if (!import.meta.env.VITE_FIRESTORE_GETSTUDENTS_ENDPOINT_URL) throw new Error("No firestore endpoint url!");
-      const response = await fetch(import.meta.env.VITE_FIRESTORE_GETSTUDENTS_ENDPOINT_URL);
+      if (!import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL) throw new Error("No firestore endpoint url!");
+      const response = await fetch(import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL);
 
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
@@ -56,7 +56,7 @@ function StudentDashboard() {
         time_entered: new Date().toISOString(),  
       };
       try {
-        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADDSTUDENT_ENDPOINT_URL, {
+        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADD_CURRENT_STUDENT_ENDPOINT_URL, {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(newStudent)
@@ -72,7 +72,7 @@ function StudentDashboard() {
 
   const handleDelete = async(kumon_id: string) => {
     try {
-      const response = await fetch(import.meta.env.VITE_FIRESTORE_DELETESTUDENT_ENDPOINT_URL, {
+      const response = await fetch(import.meta.env.VITE_FIRESTORE_DELETE_CURRENT_STUDENT_ENDPOINT_URL, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ kumon_id: kumon_id })
@@ -91,7 +91,7 @@ function StudentDashboard() {
     return () => {
       unsubscribe();
     }
-  }, [])
+  }, [navigate])
   
 
   useEffect(() => {
@@ -114,7 +114,7 @@ function StudentDashboard() {
             <h2 className="grid-column-heading-text">Student Name</h2>
           </div>
           <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Student ID</h2>
+            <h2 className="grid-column-heading-text">Kumon ID</h2>
           </div>
           <div className="grid-column-heading">
             <h2 className="grid-column-heading-text">Time Entered</h2>
