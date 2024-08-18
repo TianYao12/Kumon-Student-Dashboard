@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import StudentDashbaord from "./components/StudentDashboard";
-import { useEffect, useState } from "react";
 import AllStudentsDashboard from "./components/AllStudentsDashboard";
 
 const App = () => {
