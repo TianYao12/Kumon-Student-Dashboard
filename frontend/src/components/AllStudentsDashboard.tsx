@@ -1,7 +1,5 @@
 import "../App.css"
 import { useState, useEffect, useRef } from 'react'
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app, auth } from '../firebase/firebase'; 
 import { useNavigate } from "react-router-dom";
 import AddStudent from "./AddStudent";
 import DeleteModal from "./DeleteModal";
@@ -15,10 +13,6 @@ function StudentDashboard() {
   const navigate = useNavigate();
 
   const debounceTimeoutRef = useRef<null | NodeJS.Timeout>(null);
-
-  const handleSignOut = () => {
-    auth.signOut();
-  };
 
   const fetchStudentData = async() => {
     try {
@@ -83,15 +77,6 @@ function StudentDashboard() {
         console.error(error)
     }
   }
-  
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getAuth(app), (user) => {
-      if (!user) navigate("/");
-    })
-    return () => {
-      unsubscribe();
-    }
-  }, [navigate])
   
 
   useEffect(() => {

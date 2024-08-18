@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const AddStudent = (props: AddStudentProps) => {
     const { addOpen, setAddOpen, studentData, setStudentData } = props;
