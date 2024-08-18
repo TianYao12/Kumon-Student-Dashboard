@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('./connect_mongo');
 
 router.get('/get_all_students', (req, res) => {
     students = get_all_students();
@@ -35,10 +36,10 @@ router.put('/update_current_student/', (req, res) => { // Hadi
     return "Current Student updated";
 })
 
-<<<<<<< HEAD
 router.put('/update_current_student/:id', (req, res) => { // Hadi
     const studentId = req.params.id;
-=======
+}
+
 router.delete('/delete_student/', (req, res) => { // Hadi
     const id = req.body.id;
     delete_student(id);
