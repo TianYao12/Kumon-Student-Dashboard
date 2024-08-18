@@ -38,7 +38,7 @@ router.put('/update_current_student/', (req, res) => { // Hadi
 
 router.put('/update_current_student/:id', (req, res) => { // Hadi
     const studentId = req.params.id;
-}
+})
 
 router.delete('/delete_student/', (req, res) => { // Hadi
     const id = req.body.id;
