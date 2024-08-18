@@ -21,4 +21,10 @@ const deleteCurrentStudent = async (req, res) => {
     return "Current Student deleted";
 }
 
-export { getCurrentStudents, addCurrentStudent, updateCurrentStudent, deleteCurrentStudent };
+module.exports = 
+    { 
+        getCurrentStudents, 
+        addCurrentStudent, 
+        updateCurrentStudent, 
+        deleteCurrentStudent 
+    };

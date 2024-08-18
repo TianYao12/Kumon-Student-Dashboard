@@ -1,3 +1,6 @@
+const mongoose = require('../mongo/connect_mongo')
+const Student = require('../schemas/StudentSchema')
+
 const getAllStudents = async (req, res) => {
     students = get_all_students();
     return res.json(students);
@@ -15,10 +18,16 @@ const updateAllStudent = async (req, res) => { // Tian
     return "Student updated";
 }
 
-const deleteAllStudent = async (req, res) => { // Hadi
+const deleteAllStudent = async (req, res) => {
+    console.log("Delete All Student Reached")
     const id = req.body.id;
-    delete_student(id);
-    return "Student deleted";
+    await Student.deleteOne({ qrID: id });
+    return res.json("Student deleted");
 }
 
-export { getAllStudents, addAllStudent, updateAllStudent, deleteAllStudent };
+module.exports = {
+    getAllStudents,
+    addAllStudent,
+    updateAllStudent,
+    deleteAllStudent
+};

@@ -8,10 +8,10 @@ const studentCurrentRoutes = require('./routes/currentRoutes');
 
 dotenv.config();
 const app = express();
+connectDB();
 
 app.use(cors());
 app.use(bodyParser.json());
-connectDB();
 
 app.use("/api/all", studentAllRoutes);
 app.use("/api/current", studentCurrentRoutes);

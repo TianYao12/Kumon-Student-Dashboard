@@ -1,4 +1,4 @@
-import { getCurrentStudents, addCurrentStudent, updateCurrentStudent, deleteCurrentStudent } from './controllers/currentStudents';
+const { getCurrentStudents, addCurrentStudent, updateCurrentStudent, deleteCurrentStudent } = require('../controllers/currentStudents');
 
 const express = require('express');
 const router = express.Router();

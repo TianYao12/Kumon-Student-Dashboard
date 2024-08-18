@@ -1,6 +1,5 @@
-import { getAllStudents, addAllStudent, updateAllStudent, deleteAllStudent } from './controllers/allStudents';
-
 const express = require('express');
+const { getAllStudents, addAllStudent, updateAllStudent, deleteAllStudent } = require('../controllers/allStudents');
 const router = express.Router();
 
 router.get('/get_all_students', getAllStudents);
