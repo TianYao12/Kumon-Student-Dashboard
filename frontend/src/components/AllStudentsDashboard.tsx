@@ -1,6 +1,5 @@
 import "../App.css"
 import { useState, useEffect, useRef } from 'react'
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import AddStudent from "./AddStudent";
 import DeleteModal from "./DeleteModal";
