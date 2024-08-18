@@ -6,7 +6,9 @@ const currentStudentSchema = new mongoose.Schema({
     qrID: String,
     Subject: String,
     EnterTime: Date
-  }, { collection: 'CurrentStudents' });
+  }, {timestamps: true, 
+    collection: 'CurrentStudents' 
+  });
 
-const Student = mongoose.model('Student', studentSchema);
+const Student = mongoose.model('Student', currentStudentSchema);
 module.exports = Student;
