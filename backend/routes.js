@@ -36,10 +36,6 @@ router.put('/update_current_student/', (req, res) => { // Hadi
     return "Current Student updated";
 })
 
-router.put('/update_current_student/:id', (req, res) => { // Hadi
-    const studentId = req.params.id;
-})
-
 router.delete('/delete_student/', (req, res) => { // Hadi
     const id = req.body.id;
     delete_student(id);
