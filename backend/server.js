@@ -1,16 +1,20 @@
 const express = require('express');
-const mongoose = require('./connect_mongo');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const Student = require('./schemas/StudentSchema');
+const connectDB = require('./mongo/connect_mongo');
+const studentAllRoutes = require('./routes/allRoutes');
+const studentCurrentRoutes = require('./routes/currentRoutes');
 
 dotenv.config();
-
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+connectDB();
+
+app.use("/api/all", studentAllRoutes);
+app.use("/api/current", studentCurrentRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello, broskui hello owrlkduy7!');
