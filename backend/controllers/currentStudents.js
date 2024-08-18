@@ -11,7 +11,7 @@ const getCurrentStudents = async (req, res) => {
     }
 }
 
-const addCurrentStudent = async (req, res) => { // Hetul
+const addCurrentStudent = async (req, res) => {
     try {
         const id = req.body.id;
         const student = await AllStudents.findOne({ qrID: id });
@@ -22,12 +22,10 @@ const addCurrentStudent = async (req, res) => { // Hetul
             Subject: student.Subject,
         });
         await newStudent.save();
-    } catch(err) {
+        return res.json({success: "success"});
+    } catch (err) {
         return res.status(500).json({ message: err.message });
     }
-    const id = req.body.id;
-    add_current_students(id);
-    return "Current Student added";
 }
 
 const updateCurrentStudent = async (req, res) => { // Hadi
