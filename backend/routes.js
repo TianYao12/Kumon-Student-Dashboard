@@ -22,7 +22,7 @@ router.put('/update_student/:id', (req, res) => { // Tian
 })
 
 router.put('/update_current_student/:id', (req, res) => { // Hadi
-
+    const studentId = req.params.id;
 })
 
 router.delete('/delete_student/:id', (req, res) => { // Hadi
