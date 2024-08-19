@@ -19,8 +19,11 @@ const updateAllStudent = async (req, res) => { // Tian
 }
 
 const deleteAllStudent = async (req, res) => {
-    console.log("Delete All Student Reached")
     const id = req.body.id;
+    const student = Student.findOne({ qrID:id })
+    if(!student){
+        res.json({"Response":"Student not found", "Status":404})
+    }
     await Student.deleteOne({ qrID: id });
     return res.json("Student deleted");
 }

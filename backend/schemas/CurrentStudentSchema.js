@@ -3,12 +3,11 @@ const mongoose = require('mongoose')
 const currentStudentSchema = new mongoose.Schema({
     FirstName: String,
     LastName: String,
-    qrID: String,
-    Subject: String,
-    EnterTime: Date
-  }, {timestamps: true, 
+    qrID: { type: String, unique: true, required: true },
+    Subject: String
+}, {timestamps: true, 
     collection: 'CurrentStudents' 
   });
 
-const Student = mongoose.model('Student', currentStudentSchema);
-module.exports = Student;
+const CurrentStudent = mongoose.model('CurrentStudent', currentStudentSchema);
+module.exports = CurrentStudent;
