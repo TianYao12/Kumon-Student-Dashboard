@@ -1,7 +1,12 @@
 const Student = require('../schemas/StudentSchema')
 
 const getAllStudents = async (req, res) => {
-    return res.status(200).json(students);
+    try {
+        const students = await Student.findAll();
+        return res.json(students);
+    } catch(err) {
+        return res.status(500).json({ message: err.message });
+    }
 }
 
 const addAllStudent = async (req, res) => { 

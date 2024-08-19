@@ -35,9 +35,13 @@ const updateCurrentStudent = async (req, res) => { // Hadi
 }
 
 const deleteCurrentStudent = async (req, res) => {
-    const id = req.body.id;
-    delete_current_student(id);
-    return "Current Student deleted";
+    try {
+        const id = req.body.id;
+        await Student.deleteOne({ qrID: id });
+        return res.json({ success: "success" });
+    } catch(err) {
+        return res.status(500).json({ message: err.message });
+    }
 }
 
 module.exports = 
