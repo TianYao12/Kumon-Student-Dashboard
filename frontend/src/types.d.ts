@@ -12,7 +12,16 @@ interface AllStudentData {
   qrID: string;
 }
 
-interface AddStudentProps {
+interface CurrentStudentData {
+  FirstName: string;
+  LastName: string;
+  qrID: string;
+  Subject: "Math" | "Reading";
+  createdAt: string;
+  timeRemaining: number
+}
+
+interface AddAllStudentProps {
   addOpen: boolean;
   setAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
   studentData: StudentData[];

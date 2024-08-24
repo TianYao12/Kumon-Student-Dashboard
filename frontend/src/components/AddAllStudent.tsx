@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid"; 
 
-const AddStudent = (props: AddStudentProps) => {
+const AddAllStudent = (props: AddAllStudentProps) => {
     const { addOpen, setAddOpen, studentData, setStudentData } = props;
 
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [subject, setSubject] = useState<string>("");
-    const [qrID, setQrId] = useState<string>("");
 
     useEffect(() => {
         if (!addOpen) return;
@@ -32,18 +32,17 @@ const AddStudent = (props: AddStudentProps) => {
                     firstName,
                     lastName,
                     subject,
-                    qrID
+                    qrID: uuidv4()
                 })
             });
 
             if (!response.ok) throw new Error("Failed to add student");
             const data = await response.json();
-            
+
             setStudentData([...studentData, data.student]);
             setFirstName("");
             setLastName("");
             setSubject("");
-            setQrId("");
             setAddOpen(false);
         } catch (error) {
             console.error(error);
@@ -87,15 +86,6 @@ const AddStudent = (props: AddStudentProps) => {
                             <option value="Reading">Reading</option>
                         </select>
                     </div>
-                    <div className="add-student-text-input-container">
-                        <p className="add-student-input-heading-text">Kumon ID</p>
-                        <input
-                            type="text"
-                            className="new-student-input"
-                            value={qrID}
-                            onChange={(e) => setQrId(e.target.value)}
-                        />
-                    </div>
                     <button type="submit" className="add-student-submit-button">Submit</button>
                 </form>
             </div>
@@ -103,4 +93,4 @@ const AddStudent = (props: AddStudentProps) => {
     );
 };
 
-export default AddStudent;
+export default AddAllStudent;
