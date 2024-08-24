@@ -3,26 +3,31 @@ import React, { useState, useEffect } from "react";
 const AddStudent = (props: AddStudentProps) => {
     const { addOpen, setAddOpen, studentData, setStudentData } = props;
 
-    const [name, setName] = useState<string>("");
-    const [kumonId, setKumonId] = useState<string>("");
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
+    const [subject, setSubject] = useState<string>("");
+    const [qrId, setQrId] = useState<string>("");
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
-        if (!import.meta.env.VITE_FIRESTORE_ADD_CURRENT_STUDENT_ENDPOINT_URL) throw new Error("No firestore env key!");
-        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADD_CURRENT_STUDENT_ENDPOINT_URL, {
+        const response = await fetch("http://localhost:5000/api/all/add_all_student", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                kumon_id: kumonId,
-                name: name, 
-                time_entered: new Date().toISOString()
+                firstName: firstName,
+                lastName: lastName,
+                subject: subject,
+                qrId: qrId
             })
         });
-        if (!response.ok) throw new Error(JSON.stringify(response));
+        //TODO: add a conditional to handle response when user already exists in db
+        if (!response.ok) throw new Error(JSON.stringify(response)); 
         const data = await response.json();
-        setStudentData([...studentData, data.data])
-        setName("");
-        setKumonId("");
+        setStudentData([...studentData, data.data]);
+        setFirstName("");
+        setLastName("");
+        setSubject("");
+        setQrId("");
     }
 
     return (
@@ -30,12 +35,30 @@ const AddStudent = (props: AddStudentProps) => {
             <p className="close" onClick={() => setAddOpen(false)}>Close</p>
             <form className="form-new-student" onSubmit={handleSubmit}>
                 <div className="add-student-text-input-container ">
-                    <p className="add-student-input-heading-text">Name</p>
+                    <p className="add-student-input-heading-text">First Name</p>
                     <input
                         type="text"
                         className="new-student-input"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)} 
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)} 
+                    />
+                </div>
+                <div className="add-student-text-input-container ">
+                    <p className="add-student-input-heading-text">Last Name</p>
+                    <input
+                        type="text"
+                        className="new-student-input"
+                        value={qrId}
+                        onChange={(e) => setLastName(e.target.value)} 
+                    />
+                </div>
+                <div className="add-student-text-input-container ">
+                    <p className="add-student-input-heading-text">Subject</p>
+                    <input
+                        type="text"
+                        className="new-student-input"
+                        value={qrId}
+                        onChange={(e) => setSubject(e.target.value)} 
                     />
                 </div>
                 <div className="add-student-text-input-container ">
@@ -43,8 +66,8 @@ const AddStudent = (props: AddStudentProps) => {
                     <input
                         type="text"
                         className="new-student-input"
-                        value={kumonId}
-                        onChange={(e) => setKumonId(e.target.value)} 
+                        value={qrId}
+                        onChange={(e) => setQrId(e.target.value)} 
                     />
                 </div>
                 <button type="submit" className="add-student-submit-button">Submit</button>

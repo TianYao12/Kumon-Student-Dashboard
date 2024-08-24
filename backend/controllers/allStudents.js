@@ -2,8 +2,8 @@ const Student = require('../schemas/StudentSchema')
 
 const getAllStudents = async (req, res) => {
     try {
-        const students = await Student.findAll();
-        return res.json(students);
+        const students = await Student.find({}).select('-_id');
+        return res.status(200).json({students: students});
     } catch(err) {
         return res.status(500).json({ message: err.message });
     }

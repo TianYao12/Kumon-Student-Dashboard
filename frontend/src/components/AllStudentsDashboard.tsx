@@ -5,10 +5,10 @@ import AddStudent from "./AddStudent";
 import DeleteModal from "./DeleteModal";
 
 function StudentDashboard() {
-  const [studentData, setStudentData] = useState<StudentData[]>([]);
+  const [studentData, setStudentData] = useState<AllStudentData[]>([]);
   const [scannedData, setScannedData] = useState<string>("");
   const [deleteBool, setDeleteBool] = useState<boolean>(false);
-  const [studentToDelete, setStudentToDelete] = useState<StudentData | null>(null);
+  const [studentToDelete, setStudentToDelete] = useState<AllStudentData | null>(null);
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -16,13 +16,11 @@ function StudentDashboard() {
 
   const fetchStudentData = async() => {
     try {
-      if (!import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL) throw new Error("No firestore endpoint url!");
-      const response = await fetch(import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL);
-
+      const response = await fetch("http://localhost:5000/api/all/get_all_students");
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
-      setStudentData(data.data);
-    } catch(error) {
+      setStudentData(data.students);
+    } catch (error) {
         console.error(error);
     }
   };
@@ -89,20 +87,32 @@ function StudentDashboard() {
         <h1>All Students Dashboard</h1>
         <div className="grid-container">
           <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Student Name</h2>
+            <h2 className="grid-column-heading-text">First Name</h2>
+          </div>
+          <div className="grid-column-heading">
+            <h2 className="grid-column-heading-text">Last Name</h2>
           </div>
           <div className="grid-column-heading">
             <h2 className="grid-column-heading-text">Subject</h2>
+          </div>
+          <div className="grid-column-heading">
+            <h2 className="grid-column-heading-text">qrId</h2>
           </div>
         </div>
         { studentData.map((student, index) => {
           return (
             <div key={`${student}-${index}`} className="grid-container">
               <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.name}</h2>
+                <h2 className="grid-column-normal-text">{student.FirstName}</h2>
               </div>
               <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.subject}</h2>
+                <h2 className="grid-column-normal-text">{student.LastName}</h2>
+              </div>
+              <div className="grid-column-normal">
+                <h2 className="grid-column-normal-text">{student.Subject}</h2>
+              </div>
+              <div className="grid-column-normal">
+                <h2 className="grid-column-normal-text">{student.qrID}</h2>
               </div>
               <button 
                 onClick={() => {

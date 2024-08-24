@@ -5,11 +5,11 @@ interface AuthContextType {
   logout: () => void;
 }
 
-interface StudentData {
-  kumon_id: string; 
-  name: string; 
-  time_entered: string; 
-  subject: string;
+interface AllStudentData {
+  Subject: string; 
+  LastName: string; 
+  FirstName: string;
+  qrID: string;
 }
 
 interface AddStudentProps {
