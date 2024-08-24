@@ -226,6 +226,22 @@ body {
   transition: all 300ms ease-in-out;
 }
 
+.login-form {
+  width: clamp(200px, 50vw, 1000px);
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  height: 30px;
+  border-radius: 3px;
+  font-size: 25px;
+}
+
+.login-submit-button {
+  font-size: 25px;
+}
+
 
 @media screen and (max-width: 800px) {
   .grid-column-heading-text {

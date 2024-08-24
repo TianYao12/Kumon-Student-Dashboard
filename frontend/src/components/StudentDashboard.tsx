@@ -16,12 +16,10 @@ function StudentDashboard() {
 
   const fetchStudentData = async() => {
     try {
-      if (!import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL) throw new Error("No firestore endpoint url!");
-      const response = await fetch(import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL);
-
+      const response = await fetch("http://localhost:5000/api/current/get_current_students");
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
-      setStudentData(data.data);
+      setStudentData(data.students);
     } catch(error) {
         console.error(error);
     }

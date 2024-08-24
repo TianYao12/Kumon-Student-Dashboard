@@ -1,18 +1,19 @@
+require('dotenv').config();
+
 const session = require('express-session');
 const express = require('express');
 const app = express();
-
 app.use(express.json());
 
 app.use(session({
     key: "userId",
-    secret: "thisismysecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
         expires: 60 * 60 * 24 * 1000, 
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
     }
 }));

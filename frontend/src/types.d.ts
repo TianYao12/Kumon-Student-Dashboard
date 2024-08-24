@@ -1,3 +1,10 @@
+interface AuthContextType {
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  login: () => void;
+  logout: () => void;
+}
+
 interface StudentData {
   kumon_id: string; 
   name: string; 
