@@ -15,16 +15,7 @@ function StudentDashboard() {
   const debounceTimeoutRef = useRef<null | NodeJS.Timeout>(null);
 
   const fetchStudentData = async() => {
-    try {
-      if (!import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL) throw new Error("No firestore endpoint url!");
-      const response = await fetch(import.meta.env.VITE_FIRESTORE_GET_CURRENT_STUDENTS_ENDPOINT_URL);
 
-      if (!response.ok) throw new Error(JSON.stringify(response));
-      const data = await response.json();
-      setStudentData(data.data);
-    } catch(error) {
-        console.error(error);
-    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,39 +34,9 @@ function StudentDashboard() {
 
 
   const handleScan = async(data: string) => {
-    if (data) {
-      const newStudent = {
-        name: "PEPSI",
-        kumon_id: data,
-        time_entered: new Date().toISOString(),  
-      };
-      try {
-        const response = await fetch(import.meta.env.VITE_FIRESTORE_ADD_CURRENT_STUDENT_ENDPOINT_URL, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(newStudent)
-      });
-      if (!response.ok) throw new Error(JSON.stringify(response));
-      const data = await response.json();
-      setStudentData([...studentData, data.data]);
-      } catch(error) {
-        console.error(error);
-      }
-    }
   };
 
   const handleDelete = async(kumon_id: string) => {
-    try {
-      const response = await fetch(import.meta.env.VITE_FIRESTORE_DELETE_CURRENT_STUDENT_ENDPOINT_URL, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ kumon_id: kumon_id })
-      })
-      if (!response.ok) throw new Error(JSON.stringify(response));
-      fetchStudentData();
-    } catch(error) {
-        console.error(error)
-    }
   }
   
 
