@@ -35,13 +35,13 @@ const addCurrentStudent = async (req, res) => {
 }
 
 const updateCurrentStudent = async (req, res) => {
-    const {qrId, firstName, lastName, subject} = req.body;
-    let student = await CurrentStudent.findOne({qrID:qrId});
+    const {qrID, firstName, lastName, subject} = req.body;
+    let student = await CurrentStudent.findOne({qrID:qrID});
     if(!student){
         res.status(404).json({"Response":"Student not found"});
     }
     const updatedStudent = await CurrentStudent.findOneAndUpdate(
-        { qrID: qrId  },
+        { qrID: qrID  },
         { FirstName: firstName, LastName: lastName, Subject: subject },
         { new: true }
     )

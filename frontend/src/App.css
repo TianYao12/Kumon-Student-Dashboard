@@ -114,10 +114,9 @@ body {
 }
 
 .add-student-container {
-  margin-top: 50px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: flex-end;
 }
 
 .add-student-text-input-container {
@@ -141,6 +140,18 @@ body {
 
 .new-student-input:focus {
   outline: none
+}
+
+.new-student-select {
+  height: 30px;
+  width: 425px;
+  border: 1px solid rgb(177, 182, 235);
+  font-size: 20px;
+  border-radius: 3px;
+}
+
+.new-student-select:focus {
+  outline: none;
 }
 .form-new-student {
   display: flex;
@@ -280,6 +291,83 @@ body {
 .login-submit-button:active {
   transform: translateY(1px);
 }
+
+.add-student-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.add-student-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.close {
+  cursor: pointer;
+  text-align: right;
+}
+
+.add-student-text-input-container {
+  margin-bottom: 15px;
+}
+
+.add-student-input-heading-text {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.new-student-input, 
+.new-student-input select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: white;
+}
+
+.new-student-input:focus, 
+.new-student-input select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.new-student-input select {
+  height: 36px; /* Match the height of the input fields */
+}
+
+.add-student-submit-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.add-student-submit-button:hover {
+  background-color: #0056b3;
+}
+
 
 @media screen and (max-width: 800px) {
   .grid-column-heading-text {

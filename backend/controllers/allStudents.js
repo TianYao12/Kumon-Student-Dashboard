@@ -10,21 +10,21 @@ const getAllStudents = async (req, res) => {
 }
 
 const addAllStudent = async (req, res) => { 
-    const { firstName, lastName, qrId, subject } = req.body;
+    const { firstName, lastName, qrID, subject } = req.body;
     try {
-        const student = await Student.create({FirstName: firstName, LastName: lastName, qrId: qrId, Subject: subject });
+        const student = await Student.create({FirstName: firstName, LastName: lastName, qrID: qrID, Subject: subject });
         if (!student) throw new Error(student);
-        return res.status(200).json(student);
+        return res.status(200).json({student: student});
     } catch (error) {
         console.error(error);
     }
 }
 
 const updateAllStudent = async (req, res) => {
-    const { firstName, lastName, qrId, subject } = req.body;
+    const { firstName, lastName, qrID, subject } = req.body;
     try {
         const student = await Student.findOneAndUpdate(
-            { qrId: qrId }, 
+            { qrID: qrID }, 
             { 
                 firstName: firstName, 
                 lastName: lastName, 
@@ -42,12 +42,11 @@ const updateAllStudent = async (req, res) => {
 };
 
 const deleteAllStudent = async (req, res) => {
-    const id = req.body.id;
-    const student = Student.findOne({ qrID:id })
-    if(!student){
-        res.json({"Response":"Student not found", "Status":404})
+    const { qrID, subject } = req.body;
+    const student = await Student.deleteOne({qrID: qrID, Subject: subject})
+    if (!student) {
+        res.status(404).json({"error":"Student not found"})
     }
-    await Student.deleteOne({ qrID: id });
     return res.status(200).json("Student deleted");
 }
 

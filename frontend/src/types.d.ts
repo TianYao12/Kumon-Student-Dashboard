@@ -6,7 +6,7 @@ interface AuthContextType {
 }
 
 interface AllStudentData {
-  Subject: string; 
+  Subject: 'Math' | 'Reading'; 
   LastName: string; 
   FirstName: string;
   qrID: string;
