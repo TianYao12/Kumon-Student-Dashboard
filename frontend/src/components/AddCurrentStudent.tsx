@@ -7,6 +7,7 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [subject, setSubject] = useState<string>("");
+    const [qrID, setQrId] = useState<string>("");
 
     useEffect(() => {
         if (!addOpen) return;
@@ -25,14 +26,13 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student?addMethod=manual`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     firstName,
                     lastName,
-                    subject,
-                    qrID: uuidv4()
+                    subject
                 })
             });
 

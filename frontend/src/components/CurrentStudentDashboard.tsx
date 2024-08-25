@@ -1,6 +1,6 @@
 import "../App.css"
 import { useState, useEffect, useRef } from 'react'
-import AddCurrentStudent from "./AddAllStudent";
+import AddCurrentStudent from "./AddCurrentStudent";
 import DeleteModal from "./DeleteModal";
 
 function CurrentStudentsDashboard() {
