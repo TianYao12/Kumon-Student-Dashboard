@@ -72,10 +72,32 @@ body {
   border-radius: 4px;
   transition: background-color 0.3s ease;
   font-weight: 500;
+  margin-right: 0.5rem; 
 }
 
 .delete-button:hover {
   background-color: #ff7875;
+}
+
+.action-button {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+  margin-right: 0.5rem; /* Space between buttons */
+}
+
+.action-button:hover {
+  background-color: #ff7875;
+}
+
+.del-button {
+  margin-right: 0;
 }
 
 .text-input {
