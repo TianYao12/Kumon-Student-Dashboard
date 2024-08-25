@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; 
+import { toast } from "react-toastify";
 
 const AddAllStudent = (props: AddAllStudentProps) => {
     const { addOpen, setAddOpen, studentData, setStudentData } = props;
@@ -35,9 +36,15 @@ const AddAllStudent = (props: AddAllStudentProps) => {
                     qrID: uuidv4()
                 })
             });
-
-            if (!response.ok) throw new Error("Failed to add student");
             const data = await response.json();
+
+            if (!response.ok) {
+                if (response.status === 409) {
+                    console.log(data.error)
+                    toast.error(data.error);
+                }
+                throw new Error("Failed to add student");
+            } 
 
             setStudentData([...studentData, data.student]);
             setFirstName("");

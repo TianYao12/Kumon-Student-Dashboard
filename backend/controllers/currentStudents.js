@@ -13,15 +13,20 @@ const getCurrentStudents = async (req, res) => {
 
 const addCurrentStudent = async (req, res) => {
     try {
-        const {firstName, lastName, subject, qrID} = req.body;
-        const { addMethod } = req.query;
+        const { firstName, lastName, subject, qrID } = req.body;
+        console.log(req.body)
+        let currentUserExists;
         let student, newStudent;
         
-        if (addMethod === "manual") {
-            student = await AllStudents.findOne({ FirstName: firstName, LastName: lastName, Subject: subject });
-            if (!student) return res.status(404).json({"error": "Student not found"});
-        } else {
+        if (!firstName && !lastName && !subject) { // case of qr scanner
+            currentStudentExists = await CurrentStudent.exists({qrID: qrID});
+            if (currentStudentExists) return res.status(409).json({ error: "User already exists"});
             student = await AllStudents.findOne({qrID: qrID});
+        } else { // in the case where the user make a new student by hand
+            currentUserExists = await CurrentStudent.exists({ FirstName: firstName, LastName: lastName, Subject: subject });
+            console.log(currentUserExists)
+            if (currentStudentExists) return res.status(409).json({ error: "User already exists"});
+            student = await AllStudents.findOne({ FirstName: firstName, LastName: lastName, Subject: subject });
         }
 
         if (!student) return res.status(404).json({"error": "Student not found"});

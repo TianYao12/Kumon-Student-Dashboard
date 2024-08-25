@@ -12,6 +12,8 @@ const getAllStudents = async (req, res) => {
 const addAllStudent = async (req, res) => { 
     const { firstName, lastName, qrID, subject } = req.body;
     try {
+        const allUserAlreadyExists = await Student.exists({ FirstName: firstName, LastName: lastName, Subject: subject });
+        if (allUserAlreadyExists) return res.status(409).json({error: "User already exists"});
         const student = await Student.create({FirstName: firstName, LastName: lastName, qrID: qrID, Subject: subject });
         if (!student) throw new Error(student);
         return res.status(200).json({student: student});

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; 
+import { toast } from "react-toastify";
 
 const AddCurrentStudent = (props: AddAllStudentProps) => {
     const { addOpen, setAddOpen, studentData, setStudentData } = props;
@@ -26,7 +27,7 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student?addMethod=manual`, {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -35,10 +36,15 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
                     subject
                 })
             });
-
-            if (!response.ok) throw new Error("Failed to add student");
             const data = await response.json();
 
+            if (!response.ok) {
+                if (response.status === 409) {
+                    toast.error(data.error);
+                }
+                throw new Error("Failed to add student");
+            }
+            
             setStudentData([...studentData, data.student]);
             setFirstName("");
             setLastName("");
