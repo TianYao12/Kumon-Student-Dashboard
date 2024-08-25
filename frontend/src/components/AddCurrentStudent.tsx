@@ -31,9 +31,9 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    subject
+                    firstName: firstName,
+                    lastName: lastName,
+                    subject: subject
                 })
             });
             const data = await response.json();
@@ -44,7 +44,7 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
                 }
                 throw new Error("Failed to add student");
             }
-            
+
             setStudentData([...studentData, data.student]);
             setFirstName("");
             setLastName("");
