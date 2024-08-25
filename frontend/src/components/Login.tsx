@@ -9,7 +9,7 @@ const Login = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/api/auth/login", {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/auth/login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ password: password})
