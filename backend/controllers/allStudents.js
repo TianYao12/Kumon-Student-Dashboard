@@ -28,9 +28,9 @@ const updateAllStudent = async (req, res) => {
         const student = await Student.findOneAndUpdate(
             { qrID: qrID }, 
             { 
-                firstName: firstName, 
-                lastName: lastName, 
-                subject: subject 
+                FirstName: firstName, 
+                LastName: lastName, 
+                Subject: subject 
             }, 
             { new: true } 
         );
