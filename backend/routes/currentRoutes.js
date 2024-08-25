@@ -1,6 +1,6 @@
+const express = require('express');
 const { getCurrentStudents, addCurrentStudent, updateCurrentStudent, deleteCurrentStudent } = require('../controllers/currentStudents');
 
-const express = require('express');
 const router = express.Router();
 
 router.get('/get_current_students', getCurrentStudents);

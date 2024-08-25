@@ -12,7 +12,8 @@ const Login = () => {
             const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/auth/login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ password: password})
+                body: JSON.stringify({ password: password}),
+                credentials: 'include',
             });
             if (!response.ok) throw new Error(JSON.stringify(response));
             if (authContext) authContext.login();

@@ -7,13 +7,17 @@ const connectDB = require('./mongo/connect_mongo');
 const studentAllRoutes = require('./routes/allRoutes');
 const studentCurrentRoutes = require('./routes/currentRoutes');
 const authRoutes = require('./routes/authRoutes.js');
+const { checkAuth } = require("./middleware/checkAuth.js");
 
 dotenv.config();
 const app = express();
 
 connectDB();
 
-app.use(cors());
+app.use(cors({
+    origin: `http://localhost:5173`, 
+    credentials: true, 
+}));
 app.use(bodyParser.json());
 
 app.use(session({

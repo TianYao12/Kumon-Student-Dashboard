@@ -1,4 +1,4 @@
-import { useState, createContext, ReactNode } from "react";
+import { useState, useEffect, createContext, ReactNode } from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 

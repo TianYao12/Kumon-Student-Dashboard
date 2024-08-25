@@ -117,8 +117,8 @@ function CurrentStudentsDashboard() {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Subject</th>
-              <th>Time entered</th>
-              <th>Time remaining</th>
+              <th>Time Entered</th>
+              <th>Time Elapsed</th>
               <th>Actions</th>
             </tr>
           </thead>
