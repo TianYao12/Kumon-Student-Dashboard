@@ -32,4 +32,5 @@ interface DeleteModalProps {
   student: StudentData | null;
   onDelete: () => void;
   onClose: () => void;
+  deleteType: "ALL" | "CURRENT"
 }

@@ -101,7 +101,7 @@ function AllStudentsDashboard() {
   return (
     <>
       <div className='main-container'>
-        <h1 className='students-header'>All Students</h1>
+        <h1 className='big-header'>All Students</h1>
         <div className="add-student-container">
           <button
             onClick={() => setAddOpen((prev) => !prev)}
@@ -245,6 +245,7 @@ function AllStudentsDashboard() {
             handleDelete(studentToDelete!.qrID, studentToDelete!.Subject);
           }}
           student={studentToDelete}
+          deleteType="ALL"
         />
       }
     </>

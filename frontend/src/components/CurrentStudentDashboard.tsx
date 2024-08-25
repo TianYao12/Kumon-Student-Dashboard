@@ -77,7 +77,7 @@ function CurrentStudentsDashboard() {
   return (
     <>
       <div className='main-container'> 
-        <h1 className='students-header'>Current Students</h1>
+        <h1 className='big-header'>Current Students</h1>
         <div className="add-student-container">
           <button 
             onClick={() => setAddOpen((prev) => !prev)} 
@@ -140,6 +140,7 @@ function CurrentStudentsDashboard() {
             handleDelete(studentToDelete!.qrID, studentToDelete!.Subject);
           }}
           student={studentToDelete}
+          deleteType="CURRENT"
         />
       }
     </>

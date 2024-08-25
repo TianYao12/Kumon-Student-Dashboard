@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import Navbar from "./components/Navbar";
+import CheckAuth from "./components/CheckAuth";
+import Login from "./components/Login";
 import CurrentStudentDashbaord from "./components/CurrentStudentDashboard";
 import AllStudentsDashboard from "./components/AllStudentsDashboard";
-import Login from "./components/Login";
+import QRCodes from "./components/Codes"
 import { AuthProvider } from "./context/AuthContext";
-import CheckAuth from "./components/CheckAuth";
-import Navbar from "./components/Navbar";
 
 const App = () => {
     return (
@@ -21,9 +22,20 @@ const App = () => {
                         </CheckAuth>
                         } 
                     />
-                    <Route path="/allstudents" element={<CheckAuth>
-                        <AllStudentsDashboard />
-                    </CheckAuth>} />
+                    <Route path="/allstudents" 
+                        element={
+                            <CheckAuth>
+                                <AllStudentsDashboard />
+                            </CheckAuth>
+                        } 
+                    />
+                    <Route path="/qrcodes" 
+                        element={
+                            <CheckAuth>
+                                <QRCodes />
+                            </CheckAuth>
+                        } 
+                    />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

@@ -13,6 +13,9 @@ const Navbar = () => {
                 <li>
                     <Link to="/allstudents" className="navbar-list-item-text">All Students</Link>
                 </li>
+                <li>
+                    <Link to="/qrcodes" className="navbar-list-item-text">QR Codes</Link>
+                </li>
                 {authContext && !authContext.isLoggedIn &&
                     <li>
                         <Link to="/login" className="navbar-list-item-text">Login</Link>
