@@ -111,6 +111,7 @@ function AllStudentsDashboard() {
                         type="text"
                         value={editStudentData.firstName}
                         onChange={(e) => handleEditChange('firstName', e.target.value)}
+                        className="edit-input"
                       />
                     </td>
                     <td>
@@ -118,35 +119,40 @@ function AllStudentsDashboard() {
                         type="text"
                         value={editStudentData.lastName}
                         onChange={(e) => handleEditChange('lastName', e.target.value)}
+                        className="edit-input"
                       />
                     </td>
                     <td>
-                      <button
-                        onClick={() => handleEditChange('subject', 'Math')}
-                        className={editStudentData.subject === 'Math' ? 'subject-button active' : 'subject-button'}
-                      >
-                        Math
-                      </button>
-                      <button
-                        onClick={() => handleEditChange('subject', 'Reading')}
-                        className={editStudentData.subject === 'Reading' ? 'subject-button active' : 'subject-button'}
-                      >
-                        Reading
-                      </button>
+                      <div className="edit-subject-buttons">
+                        <button
+                          onClick={() => handleEditChange('subject', 'Math')}
+                          className={`edit-subject-button ${editStudentData.subject === 'Math' ? 'active' : ''}`}
+                        >
+                          Math
+                        </button>
+                        <button
+                          onClick={() => handleEditChange('subject', 'Reading')}
+                          className={`edit-subject-button ${editStudentData.subject === 'Reading' ? 'active' : ''}`}
+                        >
+                          Reading
+                        </button>
+                      </div>
                     </td>
                     <td>
-                      <button
-                        onClick={() => updateStudentData(editStudentData.firstName, editStudentData.lastName, editStudentData.subject, student.qrID)}
-                        className="confirm-edit-button"
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        onClick={() => setStudentToEdit(null)}
-                        className="delete-button"
-                      >
-                        Cancel
-                      </button>
+                      <div className="edit-action-buttons">
+                        <button
+                          onClick={() => updateStudentData(editStudentData.firstName, editStudentData.lastName, editStudentData.subject, student.qrID)}
+                          className="edit-confirm-button"
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          onClick={() => setStudentToEdit(null)}
+                          className="edit-cancel-button"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </td>
                   </>
                 ) : (
