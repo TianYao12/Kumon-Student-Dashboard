@@ -43,6 +43,9 @@ body {
 }
 
 .add-student-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   margin-bottom: 2rem;
 }
 
@@ -56,6 +59,7 @@ body {
   border-radius: 4px;
   transition: background-color 0.3s ease;
   font-weight: 500;
+  width: 200px;
 }
 
 .add-student-button:hover {
@@ -313,6 +317,18 @@ body {
   }
 }
 
+.scanner-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.manual-add-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
 .signout {
   width: 100%;
   display: flex;
@@ -647,6 +663,10 @@ body {
   color: rgb(219, 222, 255)
 }
 
+.navbar-list-item-text.active {
+  color: #ccddff; 
+}
+
 .space-left-20 {
   margin-left: 20px;
 }
@@ -690,11 +710,13 @@ body {
   background-color: #0056b3;
 }
 
+.qr-input {
+  width: 60vw;
+  font-size: 18px;
+  line-height: 18px;
+  height: 40px;
+}
+
 @media screen and (max-width: 800px) {
-  .grid-column-heading-text {
-    font-size: 15px;
-  }
-  .grid-column-normal-text {
-    font-size: 13px;
-  }
+
 }

@@ -18,14 +18,13 @@ function CurrentStudentsDashboard() {
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
       setStudentData(data.students);
-      console.log(studentData)
     } catch (error) {
         console.error(error);
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     setScannedData(value);
 
     if (debounceTimeoutRef.current) {
@@ -33,12 +32,24 @@ function CurrentStudentsDashboard() {
     }
 
     debounceTimeoutRef.current = setTimeout(() => {
-      handleScan(value);
+      doScanPOSTRequest(value);
       setScannedData(""); 
     }, 300);
   };
 
-  const handleScan = async(data: string) => {
+  const doScanPOSTRequest = async(qrID: string) => {
+    try {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({qrID: qrID})
+      });
+      if (!response.ok) throw new Error(JSON.stringify(response));
+      const data = await response.json();
+      setStudentData([...studentData, data.student]);
+    } catch(error) {
+      console.error(error);
+    }
   };
 
   const handleDelete = async(qrID: string, subject: 'Math' | 'Reading') => {
@@ -63,6 +74,7 @@ function CurrentStudentsDashboard() {
     const date = new Date(isoString);
     return date.toLocaleTimeString('en-US', { hour12: true });
   };
+
   const calculateTimeDifferenceInMinutes = (isoString: string) => {
     const currentDate = new Date();
     const createdDate = new Date(isoString);
@@ -79,12 +91,25 @@ function CurrentStudentsDashboard() {
       <div className='main-container'> 
         <h1 className='big-header'>Current Students</h1>
         <div className="add-student-container">
-          <button 
-            onClick={() => setAddOpen((prev) => !prev)} 
-            className="add-student-button"
-          >
-              Add Student
-          </button>
+          <div className="scanner-container">
+            <h2>
+              Scanner
+            </h2>
+            <input 
+              className="qr-input" 
+              type="text" 
+              value={scannedData} 
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="manual-add-container">
+            <button 
+              onClick={() => setAddOpen((prev) => !prev)} 
+              className="add-student-button"
+            >
+                Manually Add Student
+            </button>
+          </div>
         </div>
         <table className="students-table">
           <thead>

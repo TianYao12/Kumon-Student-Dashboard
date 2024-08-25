@@ -8,7 +8,6 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [subject, setSubject] = useState<string>("");
-    const [qrID, setQrId] = useState<string>("");
 
     useEffect(() => {
         if (!addOpen) return;
