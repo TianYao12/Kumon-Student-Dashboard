@@ -8,10 +8,12 @@ function AllStudentsDashboard() {
   const [studentToDelete, setStudentToDelete] = useState<AllStudentData | null>(null);
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const studentsPerPage = 30;
 
   const fetchAllStudentData = async() => {
     try {
-      const response = await fetch("http://localhost:5000/api/all/get_all_students");
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/get_all_students`);
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
       setStudentData(data.students);
@@ -22,7 +24,7 @@ function AllStudentsDashboard() {
 
   const handleDelete = async(qrID: string, subject: 'Math' | 'Reading') => {
     try {
-      const response = await fetch("http://localhost:5000/api/all/delete_all_student", {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/delete_all_student`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({qrID: qrID, subject: subject})
@@ -38,10 +40,20 @@ function AllStudentsDashboard() {
     fetchAllStudentData();
   }, [])
 
+  const indexOfLastStudent = currentPage * studentsPerPage;
+  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+  const currentStudents = studentData.slice(indexOfFirstStudent, indexOfLastStudent);
+  const totalPages = Math.ceil(studentData.length / studentsPerPage);
+
+  const paginate = (pageNumber: number) => {
+    if(pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+  }
+
   return (
     <>
       <div className='main-container'> 
-        <h1>All Students</h1>
+        <h1 className='students-header'>All Students</h1>
         <div className="add-student-container">
           <button 
             onClick={() => setAddOpen((prev) => !prev)} 
@@ -50,40 +62,61 @@ function AllStudentsDashboard() {
               Add Student
           </button>
         </div>
-        <div className="grid-container-all">
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">First Name</h2>
-          </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Last Name</h2>
-          </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Subject</h2>
-          </div>
+        <table className="students-table">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Subject</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentStudents.map((student, index) => (
+              <tr key={`${student}-${index}`}>
+                <td>{student.FirstName}</td>
+                <td>{student.LastName}</td>
+                <td>{student.Subject}</td>
+                <td>
+                  <button 
+                    onClick={() => {
+                      setDeleteOpen(true); 
+                      setStudentToDelete(student)
+                    }} 
+                    className="delete-button"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="pagination">
+          <button 
+            onClick={() => paginate(currentPage - 1)} 
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={`pagination-button ${currentPage === i + 1 ? 'active' : ''}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button 
+            onClick={() => paginate(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Next
+          </button>
         </div>
-        { studentData && studentData.map((student, index) => {
-          return (
-            <div key={`${student}-${index}`} className="grid-container-all">
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.FirstName}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.LastName}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.Subject}</h2>
-              </div>
-              <button 
-                onClick={() => {
-                  setDeleteOpen(true); 
-                  setStudentToDelete(student)
-                  }} 
-                className="delete-button"
-              >
-                Delete
-              </button>
-            </div>
-        )})}
       </div>
       { addOpen && 
         <AddAllStudent
