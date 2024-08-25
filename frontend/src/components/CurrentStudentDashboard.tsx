@@ -14,7 +14,7 @@ function CurrentStudentsDashboard() {
 
   const fetchCurrentStudentData = async() => {
     try {
-      const response = await fetch("http://localhost:5000/api/current/get_current_students");
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/get_current_students`);
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
       setStudentData(data.students);
@@ -43,7 +43,7 @@ function CurrentStudentsDashboard() {
 
   const handleDelete = async(qrID: string, subject: 'Math' | 'Reading') => {
     try {
-      const response = await fetch("http://localhost:5000/api/current/delete_current_student", {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/delete_current_student`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({qrID: qrID, subject: subject})
@@ -77,7 +77,7 @@ function CurrentStudentsDashboard() {
   return (
     <>
       <div className='main-container'> 
-        <h1>Current Students</h1>
+        <h1 className='students-header'>Current Students</h1>
         <div className="add-student-container">
           <button 
             onClick={() => setAddOpen((prev) => !prev)} 
@@ -86,51 +86,40 @@ function CurrentStudentsDashboard() {
               Add Student
           </button>
         </div>
-        <div className="grid-container-current">
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text first-name-heading">First Name</h2>
-          </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Last Name</h2>
-          </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Subject</h2>
-          </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Time entered</h2>
-          </div>
-          <div className="grid-column-heading">
-            <h2 className="grid-column-heading-text">Time remaining</h2>
-          </div>
-        </div>
-        { studentData && studentData.map((student, index) => (
-            <div key={`${student}-${index}`} className="grid-container-current">
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.FirstName}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.LastName}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{student.Subject}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{formatTime(student.createdAt)}</h2>
-              </div>
-              <div className="grid-column-normal">
-                <h2 className="grid-column-normal-text">{calculateTimeDifferenceInMinutes(student.createdAt)}</h2>
-              </div>
-              <button 
-                onClick={() => {
-                  setDeleteOpen(true); 
-                  setStudentToDelete(student)
-                  }} 
-                className="delete-button"
-              >
-                Delete
-              </button>
-            </div>
-        ))}
+        <table className="students-table">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Subject</th>
+              <th>Time entered</th>
+              <th>Time remaining</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {studentData && studentData.map((student, index) => (
+              <tr key={`${student}-${index}`}>
+                <td>{student.FirstName}</td>
+                <td>{student.LastName}</td>
+                <td>{student.Subject}</td>
+                <td>{formatTime(student.createdAt)}</td>
+                <td>{calculateTimeDifferenceInMinutes(student.createdAt)}</td>
+                <td>
+                  <button 
+                    onClick={() => {
+                      setDeleteOpen(true); 
+                      setStudentToDelete(student)
+                    }} 
+                    className="delete-button"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       { addOpen && 
         <AddCurrentStudent
