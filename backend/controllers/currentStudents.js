@@ -1,4 +1,5 @@
 const CurrentStudent = require('../schemas/CurrentStudentSchema');
+const AllStudents = require("../schemas/StudentSchema")
 
 const getCurrentStudents = async (req, res) => { 
     try {
@@ -12,23 +13,30 @@ const getCurrentStudents = async (req, res) => {
 
 const addCurrentStudent = async (req, res) => {
     try {
-        const {qrID} = req.body;
-        const student = await AllStudents.findOne({ qrID: qrID });
-        console.log(student)
-        if (!student){
-            return res.status(404).json({"Response":"Student not found"})
+        const {firstName, lastName, subject, qrID} = req.body;
+        const { addMethod } = req.query;
+        let student, newStudent;
+        
+        if (addMethod === "manual") {
+            student = await AllStudents.findOne({ FirstName: firstName, LastName: lastName, Subject: subject });
+            if (!student) return res.status(404).json({"error": "Student not found"});
+        } else {
+            student = await AllStudents.findOne({qrID: qrID});
         }
-        const newStudent = await CurrentStudent.create({
+
+        if (!student) return res.status(404).json({"error": "Student not found"});
+        
+        newStudent = await CurrentStudent.create({
             FirstName: student.FirstName,
             LastName: student.LastName,
             qrID: student.qrID,
             Subject: student.Subject
         });
-        return res.status(200).json({"response":"Student added"})
-    } catch(err) {
-        return res.status(500).json({ message: err.message });
-    }
-    
+
+        return res.status(200).json({student: newStudent})
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }  
 }
 
 const updateCurrentStudent = async (req, res) => {
