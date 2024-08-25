@@ -1,5 +1,5 @@
 import "../App.css";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import AddAllStudent from "./AddAllStudent";
 import DeleteModal from "./DeleteModal";
 
@@ -43,6 +43,13 @@ function AllStudentsDashboard() {
     }
   };
 
+  const handlePaginationUpdate = (totalStudents: number) => {
+    const newTotalPages = Math.ceil(totalStudents / studentsPerPage);
+    if (currentPage > newTotalPages) {
+      setCurrentPage(newTotalPages || 1);
+    }
+  };
+
   const handleDelete = async (qrID: string, subject: 'Math' | 'Reading') => {
     try {
       const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/delete_all_student`, {
@@ -51,7 +58,11 @@ function AllStudentsDashboard() {
         body: JSON.stringify({ qrID, subject })
       });
       if (!response.ok) throw new Error(JSON.stringify(response));
-      setStudentData((studentData) => studentData.filter((student) => student.Subject !== subject && student.qrID !== qrID));
+      setStudentData((prevStudentData) => {
+        const newStudentData = prevStudentData.filter((student) => student.Subject !== subject || student.qrID !== qrID);
+        handlePaginationUpdate(newStudentData.length);
+        return newStudentData;
+      });
     } catch (error) {
       console.error(error);
     }
@@ -70,10 +81,17 @@ function AllStudentsDashboard() {
     fetchAllStudentData();
   }, []);
 
-  const indexOfLastStudent = currentPage * studentsPerPage;
-  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
-  const currentStudents = studentData.slice(indexOfFirstStudent, indexOfLastStudent);
+  useEffect(() => {
+    handlePaginationUpdate(studentData.length);
+  }, [studentData]);
+
   const totalPages = Math.ceil(studentData.length / studentsPerPage);
+
+  const currentStudents = useMemo(() => {
+    const indexOfLastStudent = currentPage * studentsPerPage;
+    const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+    return studentData.slice(indexOfFirstStudent, indexOfLastStudent);
+  }, [studentData, currentPage, studentsPerPage]);
 
   const paginate = (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > totalPages) return;
