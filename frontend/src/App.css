@@ -62,30 +62,14 @@ body {
   font-weight: 500;
   width: 100px;
   height: 60px;
-  display: grid;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .refresh-add-button:hover {
   background-color: #0059b2;
   border: 1px solid black;
-}
-
-.delete-button {
-  background-color: #ff4d4f;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  font-weight: 500;
-  margin-right: 0.5rem; 
-}
-
-.delete-button:hover {
-  background-color: #ff7875;
 }
 
 .action-button {
@@ -734,6 +718,10 @@ body {
 }
 .current-table-row-red-done:hover {
   background-color: rgb(229, 54, 54) !important;
+}
+
+.table-p {
+  font-size: 17px;
 }
 @media screen and (max-width: 800px) {
 

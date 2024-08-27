@@ -71,7 +71,7 @@ function AllStudentsDashboard() {
 
   const handleAddToCurrent = async(student: AllStudentData) => {
     try {
-        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
+        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_or_delete_current_student`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -201,9 +201,9 @@ function AllStudentsDashboard() {
                   </>
                 ) : (
                   <>
-                    <td>{student.FirstName}</td>
-                    <td>{student.LastName}</td>
-                    <td>{student.Subject}</td>
+                    <td className="table-p">{student.FirstName}</td>
+                    <td className="table-p">{student.LastName}</td>
+                    <td className="table-p">{student.Subject}</td>
                     <td>
                       <button
                         onClick={() => handleAddToCurrent(student)}

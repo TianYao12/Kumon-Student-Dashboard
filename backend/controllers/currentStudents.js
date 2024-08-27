@@ -4,27 +4,32 @@ const AllStudents = require("../schemas/StudentSchema")
 const getCurrentStudents = async (req, res) => { 
     try {
         const students = await CurrentStudent.find({});
-        console.log(students)
         return res.json({ students: students });
     } catch(err) {
         return res.status(500).json({ message: err.message });
     }
 }
 
-const addCurrentStudent = async (req, res) => {
+const addOrDeleteCurrentStudent = async (req, res) => {
     try {
         const { firstName, lastName, subject, qrID } = req.body;
         let currentUserExists;
         let student, newStudent;
         
         if (!firstName && !lastName && !subject) { // case of qr scanner
-            currentUserExists = await CurrentStudent.exists({qrID: qrID});
-            if (currentUserExists) return res.status(409).json({ error: `${firstName} ${lastName} (${subject}) already exists in Current Students`});
+            currentUserExists = await CurrentStudent.exists({ qrID: qrID });
+            if (currentUserExists) {
+                const studentDeleted = await CurrentStudent.deleteOne({qrID: qrID});
+                return res.status(200).json({ student: `${studentDeleted.FirstName} ${studentDeleted.LastName} successfully removed from table.`, added: false});
+            }
             student = await AllStudents.findOne({qrID: qrID});
-        } else { // in the case where the user make a new student by hand
+        } else { // in the case where the user make a new student manually
             currentUserExists = await CurrentStudent.exists({ FirstName: firstName, LastName: lastName, Subject: subject });
-            if (currentUserExists) return res.status(409).json({ error: `${firstName} ${lastName} (${subject}) already exists in Current Students`});
-            const allUserExists = await AllStudents.exists({FirstName: firstName, LastName: lastName, Subject: subject });
+            if (currentUserExists) {
+                const studentDeleted = await CurrentStudent.deleteOne({ FirstName: firstName, LastName: lastName, Subject: subject });
+                return res.status(200).json({ student: `${studentDeleted.FirstName} ${studentDeleted.LastName} successfully removed from table.`});
+            }
+            const allUserExists = await AllStudents.exists({ FirstName: firstName, LastName: lastName, Subject: subject });
             if (!allUserExists) return res.status(409).json({ error: `${firstName} ${lastName} does not exist in All Students. Please add to All Students.`}); 
             student = await AllStudents.findOne({ FirstName: firstName, LastName: lastName, Subject: subject });
         }
@@ -38,7 +43,7 @@ const addCurrentStudent = async (req, res) => {
             Subject: student.Subject
         });
 
-        return res.status(200).json({student: newStudent})
+        return res.status(200).json({student: newStudent, added: true})
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }  
@@ -60,7 +65,6 @@ const updateCurrentStudent = async (req, res) => {
 
 const deleteCurrentStudent = async (req, res) => {
     const { qrID, subject } = req.body;
-    console.log(req.body)
     try {
         const student = await CurrentStudent.deleteOne({qrID: qrID, Subject: subject})
         if (!student) {
@@ -76,7 +80,7 @@ const deleteCurrentStudent = async (req, res) => {
 module.exports = 
     { 
         getCurrentStudents, 
-        addCurrentStudent, 
+        addOrDeleteCurrentStudent, 
         updateCurrentStudent, 
         deleteCurrentStudent 
     };

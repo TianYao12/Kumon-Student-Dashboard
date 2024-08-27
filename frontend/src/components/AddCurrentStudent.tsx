@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid"; 
 import { toast } from "react-toastify";
 
 const AddCurrentStudent = (props: AddAllStudentProps) => {
@@ -26,7 +25,7 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
+            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_or_delete_current_student`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

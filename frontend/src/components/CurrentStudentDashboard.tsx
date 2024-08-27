@@ -41,14 +41,22 @@ function CurrentStudentsDashboard() {
 
   const doScanPOSTRequest = async(qrID: string) => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_or_delete_current_student`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({qrID: qrID})
       });
-      if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
-      setStudentData([...studentData, data.student]);
+      console.log(data.student.qrID)
+      if (!response.ok) {
+        throw new Error("Failed to add student");
+      }
+      if (data.added) {
+        setStudentData([...studentData, data.student]);
+      } else {
+        setStudentData((prev) => prev.filter((student) => student.qrID !== qrID));
+        toast.success(`Student removed from table`, {autoClose: 1500})
+      }
     } catch(error) {
       console.error(error);
     }
@@ -101,10 +109,8 @@ function CurrentStudentsDashboard() {
   const calculateTimeDifferenceInMinutes = (isoString: string) => {
     const currentDate = new Date();
     const createdDate = new Date(isoString);
-
     const differenceInMillis = Number(currentDate) - Number(createdDate);
     const differenceInMinutes = Math.floor(differenceInMillis / 1000 / 60);
-
     return differenceInMinutes === 1 ? `${differenceInMinutes}` : `${differenceInMinutes}`;
   };
 
@@ -155,11 +161,11 @@ function CurrentStudentsDashboard() {
           <tbody>
             {studentData && studentData.map((student, index) => (
               <tr key={`${student}-${index}`} className={Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 30 ? "current-table-row-red-done" : Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 25 ? "current-table-row-red"  : ""}>
-                <td>{student.FirstName}</td>
-                <td>{student.LastName}</td>
-                <td>{student.Subject}</td>
-                <td>{formatTime(student.createdAt)}</td>
-                <td>{calculateTimeDifferenceInMinutes(student.createdAt)}</td>
+                <td className="table-p">{student.FirstName}</td>
+                <td className="table-p">{student.LastName}</td>
+                <td className="table-p">{student.Subject}</td>
+                <td className="table-p">{formatTime(student.createdAt)}</td>
+                <td className="table-p">{calculateTimeDifferenceInMinutes(student.createdAt)}</td>
                 <td>
                   <button 
                     onClick={() => {
