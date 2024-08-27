@@ -9,6 +9,7 @@ function CurrentStudentsDashboard() {
   const [studentToDelete, setStudentToDelete] = useState<CurrentStudentData | null>(null);
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   const debounceTimeoutRef = useRef<null | NodeJS.Timeout>(null);
 
@@ -68,7 +69,11 @@ function CurrentStudentsDashboard() {
 
   useEffect(() => {
     fetchCurrentStudentData();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (refresh) fetchCurrentStudentData();
+  }, [refresh]);
 
   const formatTime = (isoString: string) => {
     const date = new Date(isoString);
@@ -102,12 +107,18 @@ function CurrentStudentsDashboard() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="manual-add-container">
+          <div className="refresh-add-container">
+            <button 
+              onClick={() => setRefresh(true)}
+              className="refresh-add-button"
+            >
+              Refresh
+            </button>
             <button 
               onClick={() => setAddOpen((prev) => !prev)} 
-              className="add-student-button"
+              className="refresh-add-button"
             >
-                Manually Add Student
+              Add Student
             </button>
           </div>
         </div>

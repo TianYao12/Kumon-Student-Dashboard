@@ -49,7 +49,7 @@ body {
   margin-bottom: 2rem;
 }
 
-.add-student-button {
+.refresh-add-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -57,13 +57,18 @@ body {
   font-size: 1rem;
   cursor: pointer;
   border-radius: 4px;
+  border: 1px solid black;
   transition: background-color 0.3s ease;
   font-weight: 500;
-  width: 200px;
+  width: 100px;
+  height: 60px;
+  display: grid;
+  align-items: center;
 }
 
-.add-student-button:hover {
-  background-color: #0052a3;
+.refresh-add-button:hover {
+  background-color: #0059b2;
+  border: 1px solid black;
 }
 
 .delete-button {
@@ -323,11 +328,12 @@ body {
   align-items: center;
 }
 
-.manual-add-container {
+.refresh-add-container {
   display: flex;
   justify-content: flex-end;
   width: 100%;
   margin-top: 20px;
+  gap: 10px;
 }
 .signout {
   width: 100%;
