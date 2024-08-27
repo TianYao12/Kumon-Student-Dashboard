@@ -2,6 +2,7 @@ import "../App.css"
 import { useState, useEffect, useRef } from 'react'
 import AddCurrentStudent from "./AddCurrentStudent";
 import DeleteModal from "./DeleteModal";
+import { toast } from "react-toastify";
 
 function CurrentStudentsDashboard() {
   const [studentData, setStudentData] = useState<CurrentStudentData[]>([]);
@@ -9,6 +10,7 @@ function CurrentStudentsDashboard() {
   const [studentToDelete, setStudentToDelete] = useState<CurrentStudentData | null>(null);
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const debounceTimeoutRef = useRef<null | NodeJS.Timeout>(null);
 
@@ -52,15 +54,20 @@ function CurrentStudentsDashboard() {
     }
   };
 
-  const handleDelete = async (qrID: string, subject: 'Math' | 'Reading') => {
+  const handleDelete = async (studentToDelete: CurrentStudentData | null) => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/delete_current_student`, {
-        method: "DELETE",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({qrID: qrID, subject: subject})
-      });
-      if (!response.ok) throw new Error(JSON.stringify(response));
-      setStudentData((studentData) => studentData.filter((student) => !(student.Subject === subject && student.qrID === qrID)));
+      if (studentToDelete) {
+        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/delete_current_student`, {
+          method: "DELETE",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({qrID: studentToDelete.qrID, subject: studentToDelete.Subject})
+        });
+        if (!response.ok) throw new Error(JSON.stringify(response));
+        toast.success(`${studentToDelete.FirstName} ${studentToDelete.LastName} successfully removed from current students`, {autoClose: 1500})
+        setStudentData((studentData) => studentData.filter((student) => !(student.Subject === studentToDelete.Subject && student.qrID === studentToDelete.qrID)));
+      } else {
+        throw new Error("No student to delete")
+      }
     } catch(error) {
       console.error(error);
     }
@@ -77,8 +84,14 @@ function CurrentStudentsDashboard() {
     return () => {
       clearInterval(interval);
     }
-  }, [])
+  }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (inputRef.current && !deleteOpen && !addOpen) inputRef.current.focus();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [addOpen, deleteOpen]);
 
   const formatTime = (isoString: string) => {
     const date = new Date(isoString);
@@ -106,6 +119,7 @@ function CurrentStudentsDashboard() {
               Scanner
             </h2>
             <input 
+              ref={inputRef}
               className="qr-input" 
               type="text" 
               value={scannedData} 
@@ -140,7 +154,7 @@ function CurrentStudentsDashboard() {
           </thead>
           <tbody>
             {studentData && studentData.map((student, index) => (
-              <tr key={`${student}-${index}`} className={Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 30 ? "current-table-row-red" : ""}>
+              <tr key={`${student}-${index}`} className={Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 30 ? "current-table-row-red-done" : Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 25 ? "current-table-row-red"  : ""}>
                 <td>{student.FirstName}</td>
                 <td>{student.LastName}</td>
                 <td>{student.Subject}</td>
@@ -178,7 +192,7 @@ function CurrentStudentsDashboard() {
             setStudentToDelete(null);
           }}
           onDelete={() => {
-            handleDelete(studentToDelete!.qrID, studentToDelete!.Subject);
+            handleDelete(studentToDelete);
           }}
           student={studentToDelete}
           deleteType="CURRENT"

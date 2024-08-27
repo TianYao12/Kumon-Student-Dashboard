@@ -88,7 +88,7 @@ function AllStudentsDashboard() {
             }
             throw new Error("Failed to add student");
         }
-        toast.success(`Added ${student.FirstName} ${student.LastName} to Current Students!`)
+        toast.success(`Added ${student.FirstName} ${student.LastName} to Current Students!`, {autoClose: 1500})
   } catch(error) {
     console.error(error);
   }

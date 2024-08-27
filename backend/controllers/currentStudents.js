@@ -19,13 +19,13 @@ const addCurrentStudent = async (req, res) => {
         
         if (!firstName && !lastName && !subject) { // case of qr scanner
             currentUserExists = await CurrentStudent.exists({qrID: qrID});
-            if (currentUserExists) return res.status(409).json({ error: "User already exists"});
+            if (currentUserExists) return res.status(409).json({ error: `${firstName} ${lastName} (${subject}) already exists in Current Students`});
             student = await AllStudents.findOne({qrID: qrID});
         } else { // in the case where the user make a new student by hand
             currentUserExists = await CurrentStudent.exists({ FirstName: firstName, LastName: lastName, Subject: subject });
-            if (currentUserExists) return res.status(409).json({ error: "User already exists"});
+            if (currentUserExists) return res.status(409).json({ error: `${firstName} ${lastName} (${subject}) already exists in Current Students`});
             const allUserExists = await AllStudents.exists({FirstName: firstName, LastName: lastName, Subject: subject });
-            if (!allUserExists) return res.status(409).json({ error: "Student does not exist in all users. Please add this student to all students :)"}); 
+            if (!allUserExists) return res.status(409).json({ error: `${firstName} ${lastName} does not exist in All Students. Please add to All Students.`}); 
             student = await AllStudents.findOne({ FirstName: firstName, LastName: lastName, Subject: subject });
         }
 

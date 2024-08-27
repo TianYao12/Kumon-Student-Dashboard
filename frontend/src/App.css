@@ -724,10 +724,16 @@ body {
 }
 
 .current-table-row-red {
-  background-color: rgb(255, 97, 97);
+  background-color: rgb(255, 150, 97);
 }
 .current-table-row-red:hover  {
-  background-color: rgb(255, 72, 72) !important;
+  background-color: rgb(251, 118, 52) !important;
+}
+.current-table-row-red-done {
+  background-color: rgb(234, 87, 87);
+}
+.current-table-row-red-done:hover {
+  background-color: rgb(229, 54, 54) !important;
 }
 @media screen and (max-width: 800px) {
 
