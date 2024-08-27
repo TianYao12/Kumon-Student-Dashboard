@@ -2,6 +2,7 @@ import "../App.css";
 import { useState, useEffect, useMemo } from 'react';
 import AddAllStudent from "./AddAllStudent";
 import DeleteModal from "./DeleteModal";
+import { toast } from "react-toastify";
 
 function AllStudentsDashboard() {
   const [studentData, setStudentData] = useState<AllStudentData[]>([]);
@@ -67,6 +68,31 @@ function AllStudentsDashboard() {
       console.error(error);
     }
   };
+
+  const handleAddToCurrent = async(student: AllStudentData) => {
+    try {
+        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_current_student`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                firstName: student.FirstName,
+                lastName: student.LastName,
+                subject: student.Subject
+            })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            if (response.status === 409) {
+                toast.error(data.error);
+            }
+            throw new Error("Failed to add student");
+        }
+        toast.success(`Added ${student.FirstName} ${student.LastName} to Current Students!`)
+  } catch(error) {
+    console.error(error);
+  }
+}
 
   const handleEdit = (student: AllStudentData) => {
     setStudentToEdit(student);
@@ -179,6 +205,12 @@ function AllStudentsDashboard() {
                     <td>{student.LastName}</td>
                     <td>{student.Subject}</td>
                     <td>
+                      <button
+                        onClick={() => handleAddToCurrent(student)}
+                        className="action-button edit-button"
+                      >
+                        + Current
+                      </button>
                       <button
                         onClick={() => handleEdit(student)}
                         className="action-button edit-button"

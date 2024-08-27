@@ -205,10 +205,6 @@ body {
   border-bottom: none;
 }
 
-.students-table tbody tr:hover {
-  background-color: var(--hover-color);
-}
-
 .students-table th:last-child,
 .students-table td:last-child {
   text-align: center;
@@ -723,6 +719,16 @@ body {
   height: 40px;
 }
 
+.students-table tbody tr:hover {
+  background-color: var(--hover-color);
+}
+
+.current-table-row-red {
+  background-color: rgb(255, 97, 97);
+}
+.current-table-row-red:hover  {
+  background-color: rgb(255, 72, 72) !important;
+}
 @media screen and (max-width: 800px) {
 
 }

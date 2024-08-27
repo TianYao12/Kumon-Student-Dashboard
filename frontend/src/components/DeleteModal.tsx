@@ -13,7 +13,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ onClose, student, onDelete, d
         return () => {
             document.body.style.overflow = 'auto';
         };
-    }, []);
+    }, [onClose, student]);
 
     const handleDelete = () => {
         onDelete();

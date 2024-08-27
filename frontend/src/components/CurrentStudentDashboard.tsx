@@ -9,7 +9,6 @@ function CurrentStudentsDashboard() {
   const [studentToDelete, setStudentToDelete] = useState<CurrentStudentData | null>(null);
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-  const [refresh, setRefresh] = useState<boolean>(false);
 
   const debounceTimeoutRef = useRef<null | NodeJS.Timeout>(null);
 
@@ -53,7 +52,7 @@ function CurrentStudentsDashboard() {
     }
   };
 
-  const handleDelete = async(qrID: string, subject: 'Math' | 'Reading') => {
+  const handleDelete = async (qrID: string, subject: 'Math' | 'Reading') => {
     try {
       const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/delete_current_student`, {
         method: "DELETE",
@@ -61,7 +60,7 @@ function CurrentStudentsDashboard() {
         body: JSON.stringify({qrID: qrID, subject: subject})
       });
       if (!response.ok) throw new Error(JSON.stringify(response));
-      setStudentData((studentData) => studentData.filter((student) => student.Subject !== subject && student.qrID !== qrID))
+      setStudentData((studentData) => studentData.filter((student) => !(student.Subject === subject && student.qrID === qrID)));
     } catch(error) {
       console.error(error);
     }
@@ -72,8 +71,14 @@ function CurrentStudentsDashboard() {
   }, []);
 
   useEffect(() => {
-    if (refresh) fetchCurrentStudentData();
-  }, [refresh]);
+    const interval = setInterval(() => {
+      fetchCurrentStudentData();
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+    }
+  }, [])
+
 
   const formatTime = (isoString: string) => {
     const date = new Date(isoString);
@@ -87,7 +92,7 @@ function CurrentStudentsDashboard() {
     const differenceInMillis = Number(currentDate) - Number(createdDate);
     const differenceInMinutes = Math.floor(differenceInMillis / 1000 / 60);
 
-    return differenceInMinutes === 1 ? `${differenceInMinutes}min` : `${differenceInMinutes}mins`;
+    return differenceInMinutes === 1 ? `${differenceInMinutes}` : `${differenceInMinutes}`;
   };
 
 
@@ -109,7 +114,7 @@ function CurrentStudentsDashboard() {
           </div>
           <div className="refresh-add-container">
             <button 
-              onClick={() => setRefresh(true)}
+              onClick={() => fetchCurrentStudentData()}
               className="refresh-add-button"
             >
               Refresh
@@ -129,13 +134,13 @@ function CurrentStudentsDashboard() {
               <th>Last Name</th>
               <th>Subject</th>
               <th>Time Entered</th>
-              <th>Time Elapsed</th>
+              <th>Minutes Passed</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {studentData && studentData.map((student, index) => (
-              <tr key={`${student}-${index}`}>
+              <tr key={`${student}-${index}`} className={Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 30 ? "current-table-row-red" : ""}>
                 <td>{student.FirstName}</td>
                 <td>{student.LastName}</td>
                 <td>{student.Subject}</td>
