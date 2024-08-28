@@ -150,40 +150,42 @@ function CurrentStudentsDashboard() {
             </button>
           </div>
         </div>
-        <table className="students-table">
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Subject</th>
-              <th>Time Entered</th>
-              <th>Minutes Passed</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {studentData && studentData.map((student, index) => (
-              <tr key={`${student}-${index}`} className={Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 30 ? "current-table-row-red-done" : Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 25 ? "current-table-row-red"  : ""}>
-                <td className="table-p">{student.FirstName}</td>
-                <td className="table-p">{student.LastName}</td>
-                <td className="table-p">{student.Subject}</td>
-                <td className="table-p">{formatTime(student.createdAt)}</td>
-                <td className="table-p">{calculateTimeDifferenceInMinutes(student.createdAt)}</td>
-                <td>
-                  <button 
-                    onClick={() => {
-                      setDeleteOpen(true); 
-                      setStudentToDelete(student)
-                    }} 
-                    className="delete-button"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="table-wrapper">
+          <table className="students-table">
+            <thead>
+              <tr>
+                <th className="first-name-column">First Name</th>
+                <th className="last-name-column">Last Name</th>
+                <th className="subject-column">Subject</th>
+                <th className="time-entered-column">Entered</th>
+                <th className="minutes-passed-column">Minutes</th>
+                <th className="actions-column-current">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {studentData && studentData.map((student, index) => (
+                <tr key={`${student}-${index}`} className={Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 30 ? "current-table-row-red-done" : Number(calculateTimeDifferenceInMinutes(student.createdAt)) > 25 ? "current-table-row-red"  : ""}>
+                  <td className="table-p">{student.FirstName}</td>
+                  <td className="table-p">{student.LastName}</td>
+                  <td className="table-p">{student.Subject}</td>
+                  <td className="table-p">{formatTime(student.createdAt)}</td>
+                  <td className="table-p">{calculateTimeDifferenceInMinutes(student.createdAt)}</td>
+                  <td>
+                    <button 
+                      onClick={() => {
+                        setDeleteOpen(true); 
+                        setStudentToDelete(student)
+                      }} 
+                      className="delete-button"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       { addOpen && 
         <AddCurrentStudent

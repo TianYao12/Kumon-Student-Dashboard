@@ -86,9 +86,9 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
                             onChange={(e) => setSubject(e.target.value)}
                             required
                         >
-                            <option value="" disabled>Select a subject</option>
-                            <option value="Math">Math</option>
-                            <option value="Reading">Reading</option>
+                            <option className="select-text" value="" disabled>Select a subject</option>
+                            <option className="select-text" value="Math">Math</option>
+                            <option className="select-text" value="Reading">Reading</option>
                         </select>
                     </div>
                     <button type="submit" className="add-student-submit-button">Submit</button>

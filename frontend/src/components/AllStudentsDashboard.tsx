@@ -139,103 +139,105 @@ function AllStudentsDashboard() {
             Add Student
           </button>
         </div>
-        <table className="students-table">
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Subject</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentStudents.map((student, index) => (
-              <tr key={`${student.qrID}-${index}`}>
-                {studentToEdit?.qrID === student.qrID ? (
-                  <>
-                    <td>
-                      <input
-                        type="text"
-                        value={editStudentData.firstName}
-                        onChange={(e) => handleEditChange('firstName', e.target.value)}
-                        className="edit-input"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={editStudentData.lastName}
-                        onChange={(e) => handleEditChange('lastName', e.target.value)}
-                        className="edit-input"
-                      />
-                    </td>
-                    <td>
-                      <div className="edit-subject-buttons">
-                        <button
-                          onClick={() => handleEditChange('subject', 'Math')}
-                          className={`edit-subject-button ${editStudentData.subject === 'Math' ? 'active' : ''}`}
-                        >
-                          Math
-                        </button>
-                        <button
-                          onClick={() => handleEditChange('subject', 'Reading')}
-                          className={`edit-subject-button ${editStudentData.subject === 'Reading' ? 'active' : ''}`}
-                        >
-                          Reading
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="edit-action-buttons">
-                        <button
-                          onClick={() => updateStudentData(editStudentData.firstName, editStudentData.lastName, editStudentData.subject, student.qrID)}
-                          className="edit-confirm-button"
-                        >
-                          Confirm
-                        </button>
-                        <button
-                          onClick={() => setStudentToEdit(null)}
-                          className="edit-cancel-button"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="table-p">{student.FirstName}</td>
-                    <td className="table-p">{student.LastName}</td>
-                    <td className="table-p">{student.Subject}</td>
-                    <td>
-                      <button
-                        onClick={() => handleAddToCurrent(student)}
-                        className="action-button edit-button"
-                      >
-                        + Current
-                      </button>
-                      <button
-                        onClick={() => handleEdit(student)}
-                        className="action-button edit-button"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => {
-                          setDeleteOpen(true);
-                          setStudentToDelete(student);
-                        }}
-                        className="action-button del-button"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </>
-                )}
+        <div className="table-wrapper">
+          <table className="students-table">
+            <thead>
+              <tr>
+                <th className="first-name-column">First Name</th>
+                <th className="last-name-column">Last Name</th>
+                <th className="subject-column">Subject</th>
+                <th className="actions-column">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentStudents.map((student, index) => (
+                <tr key={`${student.qrID}-${index}`}>
+                  {studentToEdit?.qrID === student.qrID ? (
+                    <>
+                      <td>
+                        <input
+                          type="text"
+                          value={editStudentData.firstName}
+                          onChange={(e) => handleEditChange('firstName', e.target.value)}
+                          className="edit-input"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={editStudentData.lastName}
+                          onChange={(e) => handleEditChange('lastName', e.target.value)}
+                          className="edit-input"
+                        />
+                      </td>
+                      <td>
+                        <div className="edit-subject-buttons">
+                          <button
+                            onClick={() => handleEditChange('subject', 'Math')}
+                            className={`edit-subject-button ${editStudentData.subject === 'Math' ? 'active' : ''}`}
+                          >
+                            Math
+                          </button>
+                          <button
+                            onClick={() => handleEditChange('subject', 'Reading')}
+                            className={`edit-subject-button ${editStudentData.subject === 'Reading' ? 'active' : ''}`}
+                          >
+                            Reading
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="edit-action-buttons">
+                          <button
+                            onClick={() => updateStudentData(editStudentData.firstName, editStudentData.lastName, editStudentData.subject, student.qrID)}
+                            className="edit-confirm-button"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            onClick={() => setStudentToEdit(null)}
+                            className="edit-cancel-button"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="table-p">{student.FirstName}</td>
+                      <td className="table-p">{student.LastName}</td>
+                      <td className="table-p">{student.Subject}</td>
+                      <td>
+                        <button
+                          onClick={() => handleAddToCurrent(student)}
+                          className="action-button edit-button"
+                        >
+                          + Current
+                        </button>
+                        <button
+                          onClick={() => handleEdit(student)}
+                          className="action-button edit-button"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDeleteOpen(true);
+                            setStudentToDelete(student);
+                          }}
+                          className="action-button del-button"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="pagination">
           <button
             onClick={() => paginate(currentPage - 1)}
