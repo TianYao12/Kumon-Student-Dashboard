@@ -309,18 +309,6 @@ body {
 .minutes-passed-column {
   min-width: 50px;
 }
-@media (max-width: 768px) {
-  .students-table th,
-  .students-table td {
-    padding: 0.75rem;
-  }
-  .students-table th {
-    font-size: 0.8rem;
-  }
-  .students-table td {
-    font-size: 0.9rem;
-  }
-}
 
 .scanner-container {
   display: flex;
@@ -760,6 +748,15 @@ body {
   width: 100px;
 }
 
-@media screen and (max-width: 800px) {
-
+@media (max-width: 768px) {
+  .students-table th,
+  .students-table td {
+    padding: 0.75rem;
+  }
+  .students-table th {
+    font-size: 0.8rem;
+  }
+  .students-table td {
+    font-size: 0.9rem;
+  }
 }
