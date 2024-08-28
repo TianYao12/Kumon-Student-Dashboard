@@ -16,7 +16,7 @@ function AllStudentsDashboard() {
 
   const fetchAllStudentData = async () => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/get_all_students`);
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/get_all_students`, { credentials: "include" });
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
       setStudentData(data.students);
@@ -30,7 +30,8 @@ function AllStudentsDashboard() {
       const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/update_all_student`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName, subject, qrID })
+        body: JSON.stringify({ firstName, lastName, subject, qrID }),
+        credentials: "include"
       });
       if (!response.ok) throw new Error(JSON.stringify(response));
       setStudentData((studentData) =>
@@ -56,7 +57,8 @@ function AllStudentsDashboard() {
       const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/delete_all_student`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ qrID, subject })
+        body: JSON.stringify({ qrID, subject }),
+        credentials: "include"
       });
       if (!response.ok) throw new Error(JSON.stringify(response));
       setStudentData((prevStudentData) => {
@@ -78,7 +80,8 @@ function AllStudentsDashboard() {
                 firstName: student.FirstName,
                 lastName: student.LastName,
                 subject: student.Subject
-            })
+            }),
+            credentials: "include"
         });
         const data = await response.json();
 

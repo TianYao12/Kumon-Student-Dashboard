@@ -34,13 +34,13 @@ const AddAllStudent = (props: AddAllStudentProps) => {
                     lastName,
                     subject,
                     qrID: uuidv4()
-                })
+                }),
+                credentials: "include"
             });
             const data = await response.json();
 
             if (!response.ok) {
                 if (response.status === 409) {
-                    console.log(data.error)
                     toast.error(data.error);
                 }
                 throw new Error("Failed to add student");

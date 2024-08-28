@@ -16,7 +16,9 @@ function CurrentStudentsDashboard() {
 
   const fetchCurrentStudentData = async() => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/get_current_students`);
+      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/get_current_students`,{
+        credentials: "include"
+      });
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
       setStudentData(data.students);
@@ -44,10 +46,10 @@ function CurrentStudentsDashboard() {
       const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_or_delete_current_student`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({qrID: qrID})
+        body: JSON.stringify({qrID: qrID}),
+        credentials: "include"
       });
       const data = await response.json();
-      console.log(data.student.qrID)
       if (!response.ok) {
         throw new Error("Failed to add student");
       }
@@ -68,7 +70,8 @@ function CurrentStudentsDashboard() {
         const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/delete_current_student`, {
           method: "DELETE",
           headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({qrID: studentToDelete.qrID, subject: studentToDelete.Subject})
+          body: JSON.stringify({qrID: studentToDelete.qrID, subject: studentToDelete.Subject}),
+          credentials: "include"
         });
         if (!response.ok) throw new Error(JSON.stringify(response));
         toast.success(`${studentToDelete.FirstName} ${studentToDelete.LastName} successfully removed from current students`, {autoClose: 1500})

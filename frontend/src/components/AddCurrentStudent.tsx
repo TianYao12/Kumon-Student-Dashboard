@@ -32,7 +32,8 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
                     firstName: firstName,
                     lastName: lastName,
                     subject: subject
-                })
+                }),
+                credentials: "include"
             });
             const data = await response.json();
 

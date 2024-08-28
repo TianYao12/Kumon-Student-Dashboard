@@ -21,30 +21,21 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.use(session({
-    key: 'userId',
-    secret: process.env.SESSION_SECRET || 'defaultsecret',
+    key: "sessionId",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: 60 * 60 * 24 * 1000,
+        expires: 60 * 60 * 24 * 1000, 
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', 
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
     }
 }));
 
-app.use('/api/all', studentAllRoutes);
-app.use('/api/current', studentCurrentRoutes);
+app.use('/api/all', checkAuth, studentAllRoutes);
+app.use('/api/current', checkAuth, studentCurrentRoutes);
 app.use('/api/auth', authRoutes);
-
-app.get('/', (req, res) => {
-    res.send('Hello, broskui hello owrlkduy7!');
-});
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

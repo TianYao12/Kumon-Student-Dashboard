@@ -52,10 +52,11 @@ const Codes = () => {
   useEffect(() => {
     const getQRCodes = async () => {
       try {
-        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/get_all_students`);
+        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/get_all_students`,{
+          credentials: "include"
+        });
         if (!response.ok) throw new Error(JSON.stringify(response));
         const data = await response.json();
-        console.log(data.students)
         setQrCodes(data.students);
       } catch (error) {
         console.error(error);
