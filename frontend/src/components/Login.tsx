@@ -13,6 +13,7 @@ const Login = () => {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ password: password}),
+                credentials: "include"
             });
             if (!response.ok) throw new Error(JSON.stringify(response));
             if (authContext) authContext.login();

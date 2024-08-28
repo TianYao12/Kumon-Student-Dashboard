@@ -1,10 +1,11 @@
 const express = require('express');
 const { login, logout, auth } = require('../controllers/auth');
+const { checkAuth } = require("../middleware/checkAuth");
 
 const router = express.Router();
 
-router.post('/login/', login);
-router.get('/logout/', logout);
-router.get('/authorize_admin/', auth);
+router.post('/login', login);
+router.post('/logout', checkAuth, logout);
+router.get('/isAuthorized', auth);
 
 module.exports = router;

@@ -723,6 +723,10 @@ body {
 .table-p {
   font-size: 17px;
 }
+
+.pointer {
+  cursor: pointer;
+}
 @media screen and (max-width: 800px) {
 
 }

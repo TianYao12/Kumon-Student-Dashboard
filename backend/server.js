@@ -8,6 +8,7 @@ const studentAllRoutes = require('./routes/allRoutes');
 const studentCurrentRoutes = require('./routes/currentRoutes');
 const authRoutes = require('./routes/authRoutes.js');
 const { checkAuth } = require("./middleware/checkAuth.js");
+const MongoStore = require('connect-mongo');
 
 dotenv.config();
 const app = express();
@@ -23,14 +24,15 @@ app.use(bodyParser.json());
 app.use(session({
     key: "sessionId",
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
         expires: 60 * 60 * 24 * 1000, 
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
-    }
+    },
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
 }));
 
 app.use('/api/all', checkAuth, studentAllRoutes);

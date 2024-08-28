@@ -17,12 +17,12 @@ const Navbar = () => {
             <ul className="navbar-list-items-container">
                 <li>
                     <Link to="/" className={`${getNavLinkClass('/')} space-left-20`}>
-                        Current Students
+                        Current
                     </Link>
                 </li>
                 <li>
                     <Link to="/allstudents" className={getNavLinkClass('/allstudents')}>
-                        All Students
+                        All
                     </Link>
                 </li>
                 <li>
@@ -37,6 +37,13 @@ const Navbar = () => {
                         </Link>
                     </li>
                 )}
+                {/* {authContext && authContext.isLoggedIn && (
+                    <li>
+                        <div onClick={() => authContext.logout()} className={`${getNavLinkClass('/logout')} pointer`}>
+                            Logout
+                        </div>
+                    </li>
+                )} */}
             </ul>
         </nav>
     );
