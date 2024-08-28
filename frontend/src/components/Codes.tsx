@@ -73,7 +73,7 @@ const Codes = () => {
         fileName="qrcodes.pdf"
         className="download-link"
       >
-        {({ blob, url, loading, error }) =>
+        {({ loading }) =>
           loading ? 'Loading document...' : 'Download/Print QR Codes'
         }
       </PDFDownloadLink>
