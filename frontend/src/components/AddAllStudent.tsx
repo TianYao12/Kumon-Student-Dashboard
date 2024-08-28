@@ -26,7 +26,7 @@ const AddAllStudent = (props: AddAllStudentProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/add_all_student`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/add_all_student`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

@@ -7,7 +7,7 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
 
     const removeCookie = async() => {
         try {
-            const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/auth/logout`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/logout`, {
                 method: "POST",
                 credentials: "include"
             });
@@ -21,7 +21,7 @@ const AuthProvider = ({children}: {children: ReactNode}) => {
     useEffect(() => {
         const checkAuthStatus = async() => {
             try {
-                const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/auth/isAuthorized`, {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/isAuthorized`, {
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error(JSON.stringify(response));

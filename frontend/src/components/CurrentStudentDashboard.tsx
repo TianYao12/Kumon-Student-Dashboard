@@ -16,7 +16,7 @@ function CurrentStudentsDashboard() {
 
   const fetchCurrentStudentData = async() => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/get_current_students`,{
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/get_current_students`,{
         credentials: "include"
       });
       if (!response.ok) throw new Error(JSON.stringify(response));
@@ -43,7 +43,7 @@ function CurrentStudentsDashboard() {
 
   const doScanPOSTRequest = async(qrID: string) => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_or_delete_current_student`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/add_or_delete_current_student`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({qrID: qrID}),
@@ -67,7 +67,7 @@ function CurrentStudentsDashboard() {
   const handleDelete = async (studentToDelete: CurrentStudentData | null) => {
     try {
       if (studentToDelete) {
-        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/delete_current_student`, {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/delete_current_student`, {
           method: "DELETE",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({qrID: studentToDelete.qrID, subject: studentToDelete.Subject}),

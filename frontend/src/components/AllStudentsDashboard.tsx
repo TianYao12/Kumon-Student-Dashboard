@@ -16,7 +16,7 @@ function AllStudentsDashboard() {
 
   const fetchAllStudentData = async () => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/get_all_students`, { credentials: "include" });
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students`, { credentials: "include" });
       if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
       setStudentData(data.students);
@@ -27,7 +27,7 @@ function AllStudentsDashboard() {
 
   const updateStudentData = async (firstName: string, lastName: string, subject: 'Math' | 'Reading', qrID: string) => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/update_all_student`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/update_all_student`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, subject, qrID }),
@@ -54,7 +54,7 @@ function AllStudentsDashboard() {
 
   const handleDelete = async (qrID: string, subject: 'Math' | 'Reading') => {
     try {
-      const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all/delete_all_student`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/delete_all_student`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ qrID, subject }),
@@ -73,7 +73,7 @@ function AllStudentsDashboard() {
 
   const handleAddToCurrent = async(student: AllStudentData) => {
     try {
-        const response = await fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/current/add_or_delete_current_student`, {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/add_or_delete_current_student`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
