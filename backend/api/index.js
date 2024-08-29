@@ -23,7 +23,7 @@ const corsMiddleware = (req, res, next) => {
       res.setHeader('Access-Control-Allow-Origin', origin);
     }
   
-    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Credentials', "true");
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
     res.setHeader(
       'Access-Control-Allow-Headers',
@@ -44,14 +44,17 @@ app.use(bodyParser.json());
 app.use(session({
     key: "sessionId",
     secret: process.env.SESSION_SECRET,
+    resave: false, 
+    saveUninitialized: false,
     cookie: {
         maxAge: 60 * 60 * 24 * 1000, // 24 hours
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        secure: process.env.NODE_ENV === 'production', 
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     },
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
 }));
+
 
 app.use('/api/all', checkAuth, studentAllRoutes);
 app.use('/api/current', checkAuth, studentCurrentRoutes);
@@ -66,7 +69,9 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Something went wrong!' });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (process.env.NODE_ENV !== "production") {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
 
 module.exports = app;

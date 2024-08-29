@@ -19,8 +19,8 @@ function CurrentStudentsDashboard() {
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/get_current_students`,{
         credentials: "include"
       });
-      if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
+      if (!response.ok) throw new Error(`${JSON.stringify(response)}, ${data.sessions}`);
       setStudentData(data.students);
     } catch (error) {
         console.error(error);
