@@ -90,11 +90,15 @@ function CurrentStudentsDashboard() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchCurrentStudentData();
-    }, 60000);
-    return () => {
-      clearInterval(interval);
-    }
+      setStudentData((prev) =>
+        prev.map((student) => ({
+          ...student,
+          minutesPassed: calculateTimeDifferenceInMinutes(student.createdAt),
+        }))
+      );
+    }, 60000); 
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
