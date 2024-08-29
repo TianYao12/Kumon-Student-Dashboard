@@ -17,8 +17,8 @@ function AllStudentsDashboard() {
   const fetchAllStudentData = async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students`, { credentials: "include" });
-      if (!response.ok) throw new Error(JSON.stringify(response));
       const data = await response.json();
+      if (!response.ok) throw new Error(`${JSON.stringify(response)}, ${data}`);
       setStudentData(data.students);
     } catch (error) {
       console.error(error);

@@ -117,7 +117,6 @@ function CurrentStudentsDashboard() {
     return differenceInMinutes === 1 ? `${differenceInMinutes}` : `${differenceInMinutes}`;
   };
 
-
   return (
     <>
       <div className='main-container'> 
