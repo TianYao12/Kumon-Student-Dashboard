@@ -1,40 +1,36 @@
-import { FormEvent, useState, useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
+import GoogleSignIn from "./GoogleSignIn";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../firebase/firebase"; 
 
 const Login = () => {
-    const [password, setPassword] = useState<string>("");
-    const authContext = useContext<AuthContextType | null>(AuthContext);
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ password: password}),
-                credentials: "include"
+    const login = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                console.log("User signed in:", result.user);
+            })
+            .catch((error) => {
+                console.error("Error during sign-in:", error);
             });
-            if (!response.ok) throw new Error(JSON.stringify(response));
-            if (authContext) authContext.login();
-            
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    };
+
+    const authContext = useContext(AuthContext);
+
     return (
         <>
             {authContext && authContext.isLoggedIn ? (
                 <Navigate to="/" />
-             ) : (
-                <form className="login-form" onSubmit={handleSubmit}>
+            ) : (
+                <div className="login-container" onClick={login}>
                     <h1>Login</h1>
-                    <input className="login-input" type="text" onChange={(e) => setPassword(e.target.value)} value={password} />
-                    <button className="login-submit-button" type="submit">Submit</button>
-                </form>
-             )}
+                    <GoogleSignIn />
+                </div>
+            )}
         </>
-    )
-}
+    );
+};
 
 export default Login;

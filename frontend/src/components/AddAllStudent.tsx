@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; 
 import { toast } from "react-toastify";
+import { getAuth } from "firebase/auth";
 
 const AddAllStudent = (props: AddAllStudentProps) => {
     const { addOpen, setAddOpen, studentData, setStudentData } = props;
@@ -26,9 +27,18 @@ const AddAllStudent = (props: AddAllStudentProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            if (!currentUser) {
+                throw new Error("User not authenticated");
+            }
+            const idToken = await currentUser.getIdToken();
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/add_all_student`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${idToken}`
+                },
                 body: JSON.stringify({
                     firstName,
                     lastName,

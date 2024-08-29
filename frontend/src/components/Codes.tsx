@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, Image } from '@react-pdf/renderer';
 import QRCode from 'qrcode';
+import { getAuth } from "firebase/auth"
 
 interface AllStudentData {
   Subject: 'Math' | 'Reading';
@@ -52,7 +53,17 @@ const Codes = () => {
   useEffect(() => {
     const getQRCodes = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students`,{
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            throw new Error("User not authenticated");
+        }
+        const idToken = await currentUser.getIdToken();
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${idToken}`,
+          },
           credentials: "include"
         });
         if (!response.ok) throw new Error(JSON.stringify(response));

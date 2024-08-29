@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import AddCurrentStudent from "./AddCurrentStudent";
 import DeleteModal from "./DeleteModal";
 import { toast } from "react-toastify";
+import { getAuth } from "firebase/auth";
 
 function CurrentStudentsDashboard() {
   const [studentData, setStudentData] = useState<CurrentStudentData[]>([]);
@@ -14,18 +15,28 @@ function CurrentStudentsDashboard() {
 
   const debounceTimeoutRef = useRef<null | NodeJS.Timeout>(null);
 
-  const fetchCurrentStudentData = async() => {
+  const fetchCurrentStudentData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/get_current_students`,{
-        credentials: "include"
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(`${JSON.stringify(response)}, ${data.sessions}`);
-      setStudentData(data.students);
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            throw new Error("User not authenticated");
+        }
+        const idToken = await currentUser.getIdToken();
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/get_current_students`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${idToken}` 
+            },
+            credentials: "include"
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(JSON.stringify(response));
+        setStudentData(data.students);
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching current students:", error);
     }
-  };
+};
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -43,9 +54,18 @@ function CurrentStudentsDashboard() {
 
   const doScanPOSTRequest = async(qrID: string) => {
     try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+          throw new Error("User not authenticated");
+      }
+      const idToken = await currentUser.getIdToken();
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/add_or_delete_current_student`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${idToken}`,
+        },
         body: JSON.stringify({qrID: qrID}),
         credentials: "include"
       });
@@ -67,9 +87,18 @@ function CurrentStudentsDashboard() {
   const handleDelete = async (studentToDelete: CurrentStudentData | null) => {
     try {
       if (studentToDelete) {
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            throw new Error("User not authenticated");
+        }
+        const idToken = await currentUser.getIdToken();
         const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/delete_current_student`, {
           method: "DELETE",
-          headers: {"Content-Type": "application/json"},
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
+          },
           body: JSON.stringify({qrID: studentToDelete.qrID, subject: studentToDelete.Subject}),
           credentials: "include"
         });

@@ -1,52 +1,57 @@
 import { useState, useEffect, createContext, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+import { app, auth } from "../firebase/firebase"
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthProvider = ({children}: {children: ReactNode}) => {
+const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-    const removeCookie = async() => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/logout`, {
-                method: "POST",
-                credentials: "include"
-            });
-            if (!response.ok) throw new Error(JSON.stringify(response));
-            setIsLoggedIn(false);
-        } catch(error) {
-            console.error(error);
-        }
-    }
+    const [, setUser] = useState<User | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const checkAuthStatus = async() => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/isAuthorized`, {
-                    credentials: "include"
-                });
-                if (!response.ok) throw new Error(JSON.stringify(response));
+        const unsubscribe = onAuthStateChanged(getAuth(app), (user) => {
+            if (user) {
+                setUser(user);
                 setIsLoggedIn(true);
-                } catch( error) {
-                console.error(error);
+                if (user.email !== import.meta.env.VITE_ALLOWED_USER) {
+                    setIsLoggedIn(false);
+                    auth.signOut(); 
+                    navigate("/login");
+                }
+            } else {
+                setUser(null);
+                setIsLoggedIn(false);
+                navigate("/login");
             }
-        }
-        checkAuthStatus();
-    }, [])
-    
-    
+        });
+
+        return () => unsubscribe(); 
+    }, [navigate]);
+
     const login = () => {
         setIsLoggedIn(true);
-    }
+    };
 
     const logout = () => {
-        removeCookie();
-    }
+        auth.signOut();
+        setIsLoggedIn(false);
+        setUser(null);
+    };
+
+    const authContextValue = {
+        isLoggedIn,
+        setIsLoggedIn,
+        login,
+        logout,
+    };
 
     return (
-        <AuthContext.Provider value={{isLoggedIn, setIsLoggedIn, login, logout}}>
+        <AuthContext.Provider value={authContextValue}>
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
 export { AuthContext, AuthProvider };

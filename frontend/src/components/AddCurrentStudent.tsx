@@ -1,3 +1,4 @@
+import { getAuth } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -25,9 +26,18 @@ const AddCurrentStudent = (props: AddAllStudentProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+            if (!currentUser) {
+                throw new Error("User not authenticated");
+            }
+            const idToken = await currentUser.getIdToken();
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/current/add_or_delete_current_student`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${idToken}`
+                },
                 body: JSON.stringify({
                     firstName: firstName,
                     lastName: lastName,

@@ -1,43 +1,39 @@
-require('dotenv').config();
+const admin = require('../config/firebaseAdmin')
 
 const auth = async (req, res) => {
-    if (req.session.isAuthenticated) {
-        return res.status(200).send({ message: "Authorized" });
-    } 
-    res.status(401).send({ error: "Unauthorized" });
-};
+    const authHeader = req.headers.authorization;
 
-const login = async (req, res) => {
-    const { password } = req.body;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const idToken = authHeader.split(' ')[1];
+
     try {
-        if (password === process.env.PASSWORD) {
-            req.session.isAuthenticated = true;
-            await req.session.save();
-            res.status(200).json({ message: "Logged in!" });
-        } else {
-            res.status(400).json({ message: "Incorrect Password" });
-        }
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        req.user = decodedToken; 
+        return res.status(200).send({ message: "Authorized" });
     } catch (error) {
-        res.status(500).json({ message: `Internal Server Error: ${error.message}` });
+        console.error("Error verifying ID token:", error);
+        return res.status(401).send({ error: "Unauthorized" });
     }
 };
 
-const logout = async (req, res) => {
+const login = async (req, res) => {
+    const { idToken } = req.body;
+
     try {
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).json({ message: `Internal Server Error: ${err.message}` });
-            }
-            res.clearCookie('sessionId');
-            res.status(200).json({ message: "Logged Out!" });
-        });
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        req.user = decodedToken;
+
+        return res.status(200).json({ message: "Logged in!", user: decodedToken });
     } catch (error) {
-        res.status(500).json({ message: `Internal Server Error: ${error.message}` });
+        console.error("Error during login:", error);
+        return res.status(400).json({ message: "Invalid ID token" });
     }
 };
 
 module.exports = {
     auth,
-    login,
-    logout
+    login
 };

@@ -496,7 +496,7 @@ body {
   transition: all 300ms ease-in-out;
 }
 
-.login-form {
+.login-container {
   width: clamp(300px, 90%, 400px);
   margin: 2rem auto;
   padding: 2rem;
@@ -507,9 +507,10 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 300px;
+  cursor: pointer;
 }
 
-.login-form h1 {
+.login-container h1 {
   margin-bottom: 1.5rem;
   color: #333;
   font-size: 2rem;
@@ -748,6 +749,33 @@ body {
   width: 100px;
 }
 
+.signout {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.google-signin-button {
+  width: 300px;
+  cursor: pointer;
+}
+
+.google-signin-button-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google-icon {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .students-table th,
   .students-table td {

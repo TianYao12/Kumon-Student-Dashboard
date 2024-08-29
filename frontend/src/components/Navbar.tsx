@@ -37,13 +37,13 @@ const Navbar = () => {
                         </Link>
                     </li>
                 )}
-                {/* {authContext && authContext.isLoggedIn && (
+                {authContext && authContext.isLoggedIn && (
                     <li>
                         <div onClick={() => authContext.logout()} className={`${getNavLinkClass('/logout')} pointer`}>
                             Logout
                         </div>
                     </li>
-                )} */}
+                )}
             </ul>
         </nav>
     );
