@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const auth = async (req, res) => {
-    if (req.session.isAuthenticated) {
+    if (req.session) {
         return res.status(200).send({ message: "Authorized" });
     } 
     res.status(401).send({ error: "Unauthorized" });
@@ -13,6 +13,7 @@ const login = async (req, res) => {
         if (password === process.env.PASSWORD) {
             req.session.isAuthenticated = true;
             await req.session.save();
+            console.log('broski',req.session)
             res.status(200).json({ message: "Logged in!" });
         } else {
             res.status(400).json({ message: "Incorrect Password" });
