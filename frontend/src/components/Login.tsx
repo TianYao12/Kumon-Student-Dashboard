@@ -26,6 +26,7 @@ const Login = () => {
             ) : (
                 <div className="login-container" onClick={login}>
                     <h1>Login</h1>
+                    <p>This will only work if you use a Kumon admin email</p>
                     <GoogleSignIn />
                 </div>
             )}

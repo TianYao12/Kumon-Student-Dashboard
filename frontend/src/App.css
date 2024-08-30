@@ -508,6 +508,11 @@ body {
   align-items: center;
   margin-top: 300px;
   cursor: pointer;
+  transition: 0.3s background-color ease-in-out;
+}
+
+.login-container:hover {
+  background-color: #f4f6ff;
 }
 
 .login-container h1 {
@@ -636,7 +641,7 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: #0056b3;
+  background: #1467ba;
   height: 70px;
 }
 .navbar-list-items-container {
