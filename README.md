@@ -5,8 +5,8 @@
 - Upon scanning the QR code associated with a student's file, the app logs the student's entry into a table. The table monitors the remaining time for each student, turning the row red when only 5 minutes are left, signaling that the student needs to leave soon.
 - For each student, a QR code signifying that student is placed on their file so that when the student goes into the centre, they scan their file using a QR scanner. All students, and new students that are added to the database needs to have a unique QR Code.
 
-## Tech Used
-- Build CRUD functionality to add, delete, and edit student data using MongoDB Atlas, Express.js, and React.js
+## Tech Summary
+- Utilized Mongoose, MongoDB Atlas, Express.js, and React.js in order to display student tables, add/update/delete students, and search for students
 - Integrated Firebase authentication
-- Built responsive React.js components for student tables and react-pdf/renderer to generates QR codes
+- Built responsive React.js components for student tables with search functionality and react-pdf/renderer to generates QR codes
 - Deployed frontend using Vercel static hosting and backend using Vercel serverless functions
