@@ -25,11 +25,6 @@ const Navbar = () => {
                         All
                     </Link>
                 </li>
-                <li>
-                    <Link to="/qrcodes" className={getNavLinkClass('/qrcodes')}>
-                        QR Codes
-                    </Link>
-                </li>
                 {authContext && !authContext.isLoggedIn && (
                     <li>
                         <Link to="/login" className={getNavLinkClass('/login')}>

@@ -13,13 +13,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(app), (user) => {
             if (user) {
-                setUser(user);
-                setIsLoggedIn(true);
-                if (user.email !== import.meta.env.VITE_ALLOWED_USER) {
+                const allowedUsers = import.meta.env.VITE_ALLOWED_USER?.split(',');
+                if (!allowedUsers.includes(user.email)) {
                     setIsLoggedIn(false);
                     auth.signOut(); 
                     navigate("/login");
                 }
+                setUser(user);
+                setIsLoggedIn(true);
             } else {
                 setUser(null);
                 setIsLoggedIn(false);

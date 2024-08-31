@@ -4,7 +4,6 @@ import CheckAuth from "./components/CheckAuth";
 import Login from "./components/Login";
 import CurrentStudentDashbaord from "./components/CurrentStudentDashboard";
 import AllStudentsDashboard from "./components/AllStudentsDashboard";
-import QRCodes from "./components/Codes"
 import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
@@ -26,13 +25,6 @@ const App = () => {
                         element={
                             <CheckAuth>
                                 <AllStudentsDashboard />
-                            </CheckAuth>
-                        } 
-                    />
-                    <Route path="/qrcodes" 
-                        element={
-                            <CheckAuth>
-                                <QRCodes />
                             </CheckAuth>
                         } 
                     />

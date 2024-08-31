@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import QRCode from 'qrcode';
-import { getAuth } from "firebase/auth"
 
 interface AllStudentData {
   Subject: 'Math' | 'Reading';
@@ -47,49 +45,4 @@ const QRCodePDF = ({ qrCodes }: { qrCodes: AllStudentData[] }) => (
   </Document>
 );
 
-const Codes = () => {
-  const [qrCodes, setQrCodes] = useState<AllStudentData[]>([]);
-
-  useEffect(() => {
-    const getQRCodes = async () => {
-      try {
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            throw new Error("User not authenticated");
-        }
-        const idToken = await currentUser.getIdToken();
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${idToken}`,
-          },
-          credentials: "include"
-        });
-        if (!response.ok) throw new Error(JSON.stringify(response));
-        const data = await response.json();
-        setQrCodes(data.students);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getQRCodes();
-  }, [])
-
-  return (
-    <div className='main-container'>
-      <h1 className='big-header'>QRCodes</h1>
-      <PDFDownloadLink 
-        document={<QRCodePDF qrCodes={qrCodes} />} 
-        fileName="qrcodes.pdf"
-        className="download-link"
-      >
-        {({ loading }) =>
-          loading ? 'Loading document...' : 'Download/Print QR Codes'
-        }
-      </PDFDownloadLink>
-    </div>
-  );
-}
-
-export default Codes;
+export default QRCodePDF;

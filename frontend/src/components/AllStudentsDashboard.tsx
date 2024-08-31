@@ -4,15 +4,19 @@ import AddAllStudent from "./AddAllStudent";
 import DeleteModal from "./DeleteModal";
 import { toast } from "react-toastify";
 import { getAuth } from "firebase/auth";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import Codes from './Codes'
 
 function AllStudentsDashboard() {
   const [studentData, setStudentData] = useState<AllStudentData[]>([]);
+  const [studentsToPrint, setStudentsToPrint] = useState<AllStudentData[]>([]);
   const [studentToDelete, setStudentToDelete] = useState<AllStudentData | null>(null);
   const [studentToEdit, setStudentToEdit] = useState<AllStudentData | null>(null);
   const [editStudentData, setEditStudentData] = useState<{ firstName: string, lastName: string, subject: 'Math' | 'Reading' }>({ firstName: '', lastName: '', subject: 'Math' });
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [studentSearch, setStudentSearch] = useState<string>("");
   const studentsPerPage = 30;
 
   const fetchAllStudentData = async () => {
@@ -23,7 +27,7 @@ function AllStudentsDashboard() {
           throw new Error("User not authenticated");
       }
       const idToken = await currentUser.getIdToken();
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students`, { 
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/all/get_all_students?search=${studentSearch}`, { 
         headers: {
           "Authorization": `Bearer ${idToken}`
         },
@@ -147,7 +151,7 @@ function AllStudentsDashboard() {
 
   useEffect(() => {
     fetchAllStudentData();
-  }, []);
+  }, [studentSearch]);
 
   useEffect(() => {
     handlePaginationUpdate(studentData.length);
@@ -171,17 +175,50 @@ function AllStudentsDashboard() {
       <div className='main-container'>
         <h1 className='big-header'>All Students</h1>
         <div className="add-student-container">
-          <button
-            onClick={() => setAddOpen((prev) => !prev)}
-            className="add-student-button"
-          >
-            Add Student
-          </button>
+        <div className="search-container">
+          <div className="print-reset-container">
+            <div className="select-student-count" onClick={() => setStudentsToPrint(studentData)}>{`${studentsToPrint.length} students selected`}</div>
+            <div className="reset-default" onClick={() => setStudentsToPrint(studentData)}>Select All Students</div>
+            <div className="reset-default" onClick={() => setStudentsToPrint([])}>Reset to Default</div>
+          </div>
+          <div className="scanner-container">
+            <h2>
+              Search
+            </h2>
+            <input 
+              className="qr-input" 
+              type="text" 
+              value={studentSearch} 
+              onChange={(e) => setStudentSearch(e.target.value)}
+            />
+            </div>
+            <div>* Search is by last name</div>
+          </div>
+          <div className="qr-code-student-container">
+            { studentsToPrint.length > 0 && (
+              <PDFDownloadLink 
+                document={<Codes qrCodes={studentsToPrint} />} 
+                fileName="selected-qrcodes.pdf"
+                className="download-link"
+              >
+                {({ loading }) =>
+                  loading ? 'Generating document...' : 'Download/Print Selected QR Codes'
+                }
+              </PDFDownloadLink>
+            )}
+            <button
+              onClick={() => setAddOpen((prev) => !prev)}
+              className="add-student-button"
+            >
+              Add Student
+            </button>
+          </div>
         </div>
         <div className="table-wrapper">
           <table className="students-table">
             <thead>
               <tr>
+                <th className="qr-column">QR</th>
                 <th className="first-name-column">First Name</th>
                 <th className="last-name-column">Last Name</th>
                 <th className="subject-column">Subject</th>
@@ -244,6 +281,20 @@ function AllStudentsDashboard() {
                     </>
                   ) : (
                     <>
+                      <td className="table-p">
+                      <input 
+                        type="checkbox"
+                        checked={studentsToPrint.some(s => s.qrID === student.qrID)}
+                        onChange={() => {
+                          if (studentsToPrint.some(s => s.qrID === student.qrID)) {
+                            setStudentsToPrint(studentsToPrint.filter(s => s.qrID !== student.qrID));
+                          } else {
+                            setStudentsToPrint([...studentsToPrint, student]);
+                          }
+                        }}
+                      />
+
+                      </td>
                       <td className="table-p">{student.FirstName}</td>
                       <td className="table-p">{student.LastName}</td>
                       <td className="table-p">{student.Subject}</td>

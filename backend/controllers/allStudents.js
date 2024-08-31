@@ -1,13 +1,16 @@
 const Student = require('../schemas/StudentSchema')
 
 const getAllStudents = async (req, res) => {
+    const { search } = req.query;
     try {
-        const students = await Student.find({}).select('-_id');
-        return res.status(200).json({students: students});
-    } catch(err) {
+        const query = search ? { LastName: { $regex: search, $options: 'i' } } : {};
+        const students = await Student.find(query).select('-_id').sort({ LastName: 1 });
+        return res.status(200).json({ students: students });
+    } catch (err) {
         return res.status(500).json({ message: err.message });
     }
 }
+
 
 const addAllStudent = async (req, res) => { 
     const { firstName, lastName, qrID, subject } = req.body;
